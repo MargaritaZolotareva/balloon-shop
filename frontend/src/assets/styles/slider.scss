@@ -1,0 +1,209 @@
+.Slider {
+    display: inline-block;
+    position: relative;
+    text-align: center;
+
+	&__touchableArea {
+		overflow: hidden;
+		width: 100vw;
+		padding-top: 6px;
+		padding-bottom: 6px;
+	}
+
+	&__itemsWrap {
+		position: relative;
+		display: flex;
+		align-items: center;
+		margin: 0 auto;
+	}
+
+	&__item {
+		flex: 0 0 100%;
+		max-width: 100%;
+	}
+}
+
+.SliderIndexButtons {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	padding: 0 24px;
+
+	&__buttonWrap {
+         display: inline-flex;
+         width: 24px;
+         height: 12px;
+         justify-content: center;
+         align-items: center;
+         cursor: pointer;
+
+         &--lined {
+             width: 100%;
+         }
+         &:first-child {
+             margin-left: 0;
+         }
+     }
+    &__button {
+         background-color: $slider_button;
+         transition: all .25s;
+
+         &--active {
+              background-color: $slider_button_active;
+          }
+         &--lined {
+              width: 96%;
+              border-radius: 4px;
+              height: 2px;
+              background-color: $black;
+              opacity: .24;
+
+              &.SliderIndexButtons__button--active {
+                   opacity: .64;
+               }
+          }
+            &--rounded, &--roundedWhite {
+              width: 6px;
+              height: 6px;
+              border-radius: 50%;
+            }
+
+            &--rounded.SliderIndexButtons__button--active, &--roundedWhite.SliderIndexButtons__button--active {
+              width: 8px;
+              height: 8px;
+            }
+     }
+}
+.SlideButton {
+    &__icon {
+        color: $gray_light;
+        font-size: 28px;
+
+        &--leftGradient, &--rightGradient {
+            color: $static_white;
+        }
+    }
+}
+
+@media (min-width: 1000px) {
+    .Slider {
+        &__touchableArea {
+            width: auto;
+        }
+
+        &__itemContent {
+            margin: 0 auto;
+        }
+
+        &__navButtonWrap {
+             display: inline-block;
+             position: absolute;
+             top: 50%;
+             margin-top: -24px;
+             margin-left: -24px;
+
+             &--left {
+                  left: 34px;
+              }
+             &--right {
+                  right: 10px;
+              }
+         }
+    }
+
+    .SliderIndexButtons {
+        position: absolute;
+        bottom: 48px;
+        left: 0;
+        right: 0;
+        z-index: $third-layer-z-index;
+
+        &__buttonWrap {
+          display: inline-flex;
+          width: 24px;
+          height: 12px;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+
+          &:first-child {
+            margin-left: 0;
+          }
+        }
+
+        &__button {
+          background-color: $slider_button;
+          transition: all .25s;
+
+          &--active {
+            background-color: $slider_button_active;
+          }
+
+          &--roundedWhite {
+            background-color: $static_white;
+            opacity: .56;
+          }
+
+          &--rounded, &--roundedWhite {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+          }
+
+          &--rounded.SliderIndexButtons__button--active,
+          &--roundedWhite.SliderIndexButtons__button--active {
+            width: 8px;
+            height: 8px;
+          }
+
+          &--roundedWhite.SliderIndexButtons__button--active {
+            opacity: 1;
+          }
+        }
+    }
+
+    .SlideButton {
+        display: inline-flex;
+        width: 48px;
+        height: 48px;
+        transition: all .3s;
+        box-shadow: 0 0 2px $black_alpha8, 0 2px 24px $black_alpha8;
+
+        &:not(.SlideButton--disabled):hover {
+             transform: scale(1.1);
+             background: $white;
+
+             .SlideButton__icon {
+                 color: $black;
+             }
+         }
+        &--rightGradient {
+             background-position-x: 80px;
+
+             &:not(.SlideButton--disabled):hover {
+                  background-position-x: 0;
+                  background: -webkit-gradient(linear, right top, left top, from(rgba(0, 0, 0, .16)), to(transparent)) no-repeat;
+                  background: linear-gradient(270deg, rgba(0, 0, 0, .16) 0, transparent 100%) no-repeat;
+                  transform: none;
+              }
+         }
+        &--leftGradient {
+             background-position-x: -80px;
+
+             &:not(.SlideButton--disabled):hover {
+                  background-position-x: 0;
+                  background: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, .16)), to(transparent)) no-repeat;
+                  background: linear-gradient(90deg, rgba(0, 0, 0, .16) 0, transparent 100%) no-repeat;
+                  transform: none;
+              }
+         }
+        &--leftGradient, &--rightGradient {
+             height: 100%;
+             width: 80px;
+             border-radius: 0;
+             background: no-repeat;
+             box-shadow: none;
+         }
+    }
+}

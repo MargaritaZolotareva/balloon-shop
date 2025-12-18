@@ -1,0 +1,44 @@
+.Avatar {
+    display: inline-block;
+    position: relative;
+
+    &--s {
+        width: 32px;
+        min-width: 32px;
+        height: 32px;
+    }
+    &--m {
+         width: 100px;
+         min-width: 100px;
+         height: 100px;
+     }
+    &__img {
+        display: block;
+        width: 100%;
+        position: absolute;
+        top: 0;
+    }
+    &__wrapper {
+        width: 100%;
+        overflow: hidden;
+        border-radius: 50%;
+        position: relative;
+
+        &::before {
+            content: "";
+            display: block;
+            padding-bottom: 100%;
+        }
+    }
+}
+
+
+@media (min-width: 1000px) {
+    .Avatar {
+        &--s {
+            width: 40px;
+            min-width: 40px;
+            height: 40px;
+        }
+    }
+}

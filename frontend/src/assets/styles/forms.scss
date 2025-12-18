@@ -1,0 +1,86 @@
+.Input {
+	width: 100%;
+	padding: 12px;
+	font-size: 16px;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	color: $black;
+	background: $landing_input_background;
+	border: 1px solid $landing_input_border;
+	border-radius: $button_section_radius;
+	outline: 0;
+}
+
+.CheckBox {
+	display: inline-flex;
+	align-items: center;
+	cursor: pointer;
+	position: relative;
+	font-size: 13px;
+	line-height: 15px;
+
+	&__input {
+		display: inline-block;
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		clip: rect(1px, 1px, 1px, 1px);
+		opacity: 0;
+		overflow: hidden;
+		outline: 0;
+
+		&:checked+.CheckBox__indicator {
+            border-color: $checkbox_color;
+        }
+	}
+
+	&__indicator {
+		display: block;
+		margin: 0 7px 0 0;
+		width: 20px;
+		height: 20px;
+		border-radius: 3px;
+		flex-shrink: 0;
+		border: solid 1px $steel_gray_140;
+		background: $white;
+		box-sizing: border-box;
+	}
+    &__indicatorIcon {
+        display: block;
+        color: $checkbox_color;
+        margin-top: -3px;
+        margin-left: -5px;
+        font-size: 24px;
+    }
+}
+
+.Link {
+	text-decoration: none;
+
+	&--default {
+		color: $link;
+	}
+	&--secondary {
+         color: $gray;
+     }
+}
+
+a {
+	text-decoration: none;
+}
+
+.Textarea {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    color: $black;
+    background: $landing_input_background;
+    border: 1px solid $landing_input_border;
+    border-radius: $button_section_radius;
+    outline: 0;
+    resize: none;
+}

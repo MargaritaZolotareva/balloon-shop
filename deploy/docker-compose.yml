@@ -1,0 +1,37 @@
+services:
+  backend:
+    build: ../backend
+    env_file:
+      - ../.env
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    depends_on:
+      - db
+
+  frontend:
+    build: ../frontend
+    ports:
+      - "8081:8080"
+    volumes:
+      - ../frontend:/app
+    networks:
+      - app-network
+
+  db:
+    image: postgres:alpine
+    env_file:
+      - ../.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local

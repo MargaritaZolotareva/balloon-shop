@@ -1,6 +1,11 @@
 services:
   backend:
-    build: ../backend
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    volumes:
+      - ../backend:/app
+    working_dir: /app
     env_file:
       - ../.env
     ports:
@@ -9,9 +14,12 @@ services:
       - app-network
     depends_on:
       - db
+    command: ["/build/balloon-shop"]
 
   frontend:
     build: ../frontend
+    env_file:
+      - ../.env
     ports:
       - "8081:8080"
     volumes:
@@ -24,14 +32,43 @@ services:
     env_file:
       - ../.env
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ../backend/infrastructure/db/migrations/20251220142215_create_tables.up.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5433:5432"
+    networks:
+      - app-network
+
+  nginx:
+    build:
+      context: ..
+      dockerfile: nginx/Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - app-network
+
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    env_file:
+      - ../.env
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
     networks:
       - app-network
 
 networks:
   app-network:
     driver: bridge
+    external: true
 
 volumes:
   postgres_data:
     driver: local
+  rabbitmq_data:

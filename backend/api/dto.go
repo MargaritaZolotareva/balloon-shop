@@ -1,25 +1,25 @@
-package dto
+package api
 
 type SimilarProductResponse struct {
-	ID    int64   `json:"id"`
+	ID    int     `json:"id"`
 	Title string  `json:"title"`
 	Price float64 `json:"price"`
 	Photo string  `json:"photo_path"`
 }
 type PhotoResponse struct {
-	ID        int64  `json:"id"`
+	ID        int    `json:"id"`
 	PhotoPath string `json:"photo_path"`
 }
 
 type ProductsSectionResponse struct {
-	ID    int64   `json:"id"`
+	ID    int     `json:"id"`
 	Title string  `json:"title"`
 	Price float64 `json:"price"`
 	Photo string  `json:"photo"`
 }
 
 type ProductResponse struct {
-	ID              int64                    `json:"id"`
+	ID              int                      `json:"id"`
 	Title           string                   `json:"title"`
 	Description     string                   `json:"description"`
 	Price           float64                  `json:"price"`

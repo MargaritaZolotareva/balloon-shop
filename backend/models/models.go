@@ -3,7 +3,7 @@ package models
 import "time"
 
 type Product struct {
-	ID           int64   `json:"id"`
+	ID           int     `json:"id"`
 	Title        string  `json:"title"`
 	Description  string  `json:"description"`
 	Price        float64 `json:"price"`
@@ -13,21 +13,21 @@ type Product struct {
 }
 
 type Photo struct {
-	ID        int64     `json:"id"`
-	ProductID int64     `json:"product_id"`
+	ID        int       `json:"id"`
+	ProductID int       `json:"product_id"`
 	PhotoPath string    `json:"photo_path"`
 	CreatedAt time.Time `json:"created_at"`
-	PicOrder  int64     `json:"pic_order"`
+	PicOrder  int       `json:"pic_order"`
 }
 
 type LeadForm struct {
-	ID      int64  `json:"id"`
-	Name    string `json:"name"`
-	Phone   string `json:"phone"`
+	ID      int    `json:"id"`
+	Name    string `json:"name" binding:"required"`
+	Phone   string `json:"phone" binding:"required"`
 	Message string `json:"message"`
 }
 
 type Category struct {
-	ID    int64  `json:"id"`
+	ID    int    `json:"id"`
 	Title string `json:"title"`
 }

@@ -11,6 +11,9 @@ type RabbitMQ struct {
 	producerCh *amqp.Channel
 	consumerCh *amqp.Channel
 }
+type MqInterface interface {
+	PublishMessage(queueName string, message string) error
+}
 
 func NewRabbitMQ() (*RabbitMQ, error) {
 

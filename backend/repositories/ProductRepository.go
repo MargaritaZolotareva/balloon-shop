@@ -1,21 +1,28 @@
 package repositories
 
 import (
-	"backend/dto"
+	"backend/api"
 	"backend/models"
 	"gorm.io/gorm"
 )
 
-type ProductRepository struct {
+type ProductRepository interface {
+	GetProductsByCategory(categoryID int, limit int) ([]api.ProductsSectionResponse, error)
+	GetSimilarProducts(categoryID int, productID int) ([]api.SimilarProductResponse, error)
+	GetProduct(productID int) (models.Product, error)
+}
+
+type ProductRepositoryImpl struct {
 	DB *gorm.DB
 }
 
 func NewProductRepository(db *gorm.DB) ProductRepository {
-	return ProductRepository{db}
+
+	return &ProductRepositoryImpl{DB: db}
 }
 
-func (ps *ProductRepository) GetProductsByCategory(categoryID int64, limit int) ([]dto.ProductsSectionResponse, error) {
-	var products []dto.ProductsSectionResponse
+func (ps *ProductRepositoryImpl) GetProductsByCategory(categoryID int, limit int) ([]api.ProductsSectionResponse, error) {
+	var products []api.ProductsSectionResponse
 
 	query := ps.DB.Table("products").
 		Select("products.id, products.title, products.price, photos.photo_path as photo").
@@ -34,8 +41,8 @@ func (ps *ProductRepository) GetProductsByCategory(categoryID int64, limit int) 
 	return products, nil
 }
 
-func (ps *ProductRepository) GetSimilarProducts(categoryID int, productID int) ([]dto.SimilarProductResponse, error) {
-	var similarProducts []dto.SimilarProductResponse
+func (ps *ProductRepositoryImpl) GetSimilarProducts(categoryID int, productID int) ([]api.SimilarProductResponse, error) {
+	var similarProducts []api.SimilarProductResponse
 
 	query := ps.DB.Table("products").
 		Select("products.id, products.title, products.price, photos.photo_path as photo").
@@ -51,12 +58,12 @@ func (ps *ProductRepository) GetSimilarProducts(categoryID int, productID int) (
 	return similarProducts, nil
 }
 
-func (ps *ProductRepository) GetProduct(productID int) (*models.Product, error) {
+func (ps *ProductRepositoryImpl) GetProduct(productID int) (models.Product, error) {
 	var product models.Product
 
 	if err := ps.DB.Preload("Photos").First(&product, productID).Error; err != nil {
-		return nil, err
+		return models.Product{}, err
 	}
 
-	return &product, nil
+	return product, nil
 }

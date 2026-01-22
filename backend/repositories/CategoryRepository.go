@@ -5,15 +5,18 @@ import (
 	"gorm.io/gorm"
 )
 
-type CategoryRepository struct {
+type CategoryRepository interface {
+	GetCategory(categoryID int) (models.Category, error)
+}
+type CategoryRepositoryImpl struct {
 	DB *gorm.DB
 }
 
 func NewCategoryRepository(db *gorm.DB) CategoryRepository {
-	return CategoryRepository{db}
+	return &CategoryRepositoryImpl{DB: db}
 }
 
-func (ps *CategoryRepository) GetCategory(categoryID int) (models.Category, error) {
+func (ps *CategoryRepositoryImpl) GetCategory(categoryID int) (models.Category, error) {
 	var category models.Category
 
 	if err := ps.DB.First(&category, categoryID).Error; err != nil {

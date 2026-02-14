@@ -29,9 +29,9 @@ func (m *MockProductRepo) GetSimilarProducts(categoryID, productID int) ([]api.S
 	args := m.Called(categoryID, productID)
 	return args.Get(0).([]api.SimilarProductResponse), args.Error(1)
 }
-func (m *MockProductRepo) GetProductsByCategory(categoryID int, limit int) ([]api.GetProductsByCategoryResponse, error) {
+func (m *MockProductRepo) GetProductsByCategory(categoryID int, limit int) (api.GetProductsByCategoryResponse, error) {
 	args := m.Called(categoryID, limit)
-	return args.Get(0).([]api.GetProductsByCategoryResponse), args.Error(1)
+	return args.Get(0).(api.GetProductsByCategoryResponse), args.Error(1)
 }
 
 func (m *MockProductService) ValidateCategoryID(categoryID string) (int, error) {

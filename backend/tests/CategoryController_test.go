@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"backend/api"
 	"backend/controllers"
 	"backend/models"
 	"errors"
@@ -22,16 +23,21 @@ func (m *MockCategoryRepo) GetCategory(id int) (models.Category, error) {
 	return args.Get(0).(models.Category), args.Error(1)
 }
 
+func (m *MockCategoryRepo) GetAllCategories() ([]api.CategoriesResponse, error) {
+	args := m.Called()
+	return args.Get(0).([]api.CategoriesResponse), args.Error(1)
+}
+
 func TestCategoryController_GetCategory_Success(t *testing.T) {
 	mockRepo := new(MockCategoryRepo)
-	category := models.Category{ID: 1, Title: "Test Category"}
+	category := models.Category{ID: 1, Title: "Test Category", PhotoID: 1}
 	mockRepo.On("GetCategory", 1).Return(category, nil)
 
 	r := gin.Default()
 	cc := controllers.NewCategoryController(nil, mockRepo)
 	r.GET("/categories/:id", cc.GetCategory)
 
-	req, _ := http.NewRequest(http.MethodGet, "/category/1", nil)
+	req, _ := http.NewRequest(http.MethodGet, "/categories/1", nil)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -48,7 +54,7 @@ func TestCategoryController_GetCategory_InvalidID(t *testing.T) {
 	cc := controllers.NewCategoryController(nil, mockRepo)
 	r.GET("/categories/:id", cc.GetCategory)
 
-	req, _ := http.NewRequest(http.MethodGet, "/category/abc", nil)
+	req, _ := http.NewRequest(http.MethodGet, "/categories/abc", nil)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -66,7 +72,7 @@ func TestCategoryController_GetCategory_NotFound(t *testing.T) {
 	cc := controllers.NewCategoryController(nil, mockRepo)
 	r.GET("/categories/:id", cc.GetCategory)
 
-	req, _ := http.NewRequest(http.MethodGet, "/category/100500", nil)
+	req, _ := http.NewRequest(http.MethodGet, "/categories/100500", nil)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -85,7 +91,7 @@ func TestCategoryController_GetCategory_DBError(t *testing.T) {
 	cc := controllers.NewCategoryController(nil, mockRepo)
 	r.GET("/categories/:id", cc.GetCategory)
 
-	req, _ := http.NewRequest(http.MethodGet, "/category/1", nil)
+	req, _ := http.NewRequest(http.MethodGet, "/categories/1", nil)
 	w := httptest.NewRecorder()
 
 	r.ServeHTTP(w, req)

@@ -3,7 +3,7 @@
     <div class="Header__groupWrap" @click="redirectToHome">
       <div class="Avatar Avatar--s Header__groupAvatar">
         <div class="Avatar__wrapper">
-          <img class="Avatar__img" :src="logo" alt="PODAROKK | Воздушные и гелиевые шары"/>
+          <img class="Avatar__img" :src="logo" alt="ПОДАРОКК | Воздушные и гелиевые шары"/>
         </div>
       </div>
 
@@ -11,14 +11,14 @@
         <div :class="['Header__groupName',
                         { 'Header__groupName--light': isLightTheme,
                           'Header__groupName--dark': !isLightTheme}]">
-          PODAROKK | Воздушные и гелиевые шары
+          ПОДАРОКК | Воздушные и гелиевые шары
         </div>
 
         <a
             :class="['Contact', 'Contact--phone', 'HeaderContact', 'HeaderContact--phone', 'HeaderContact__headerPhone--mobile',
                 {'HeaderContact--light': isLightTheme,
                  'HeaderContact--dark': !isLightTheme}]"
-            href="tel:+79504454884"
+            :href="`tel:${contacts.phone}`"
             target="_target"
             rel="noopener"
         >
@@ -33,14 +33,17 @@
       <ul class="Nav__elemsWrap">
         <li class="Nav__elem">
           <a :class="['Nav__link', 'Nav__link--active', { 'Nav__link--light': isLightTheme,
-                                                            'Nav__link--dark': !isLightTheme }]" href="#top">Главная</a>
+                                                            'Nav__link--dark': !isLightTheme }]" href="/categories">Каталог</a>
         </li>
         <li class="Nav__elem"><a :class="['Nav__link', { 'Nav__link--light': isLightTheme,
-                                                             'Nav__link--dark': !isLightTheme }]" href="#products">Товары</a>
+                                                             'Nav__link--dark': !isLightTheme }]" href="/delivery">Доставка и оплата</a>
         </li>
         <li class="Nav__elem"><a :class="['Nav__link', { 'Nav__link--light': isLightTheme,
                                                              'Nav__link--dark': !isLightTheme }]"
-                                 href="#topic">Отзывы</a></li>
+                                 href="/categories/0/products">Акции</a></li>
+        <li class="Nav__elem"><a :class="['Nav__link', { 'Nav__link--light': isLightTheme,
+                                                             'Nav__link--dark': !isLightTheme }]"
+                                 href="/contacts">Контакты</a></li>
       </ul>
     </nav>
 
@@ -49,12 +52,12 @@
           :class="['Contact', 'Contact--phone', 'HeaderContact', 'HeaderContact--phone', 'HeaderContact__headerPhone--desktop',
                  { 'HeaderContact--light': isLightTheme,
                    'HeaderContact--dark': !isLightTheme } ]"
-          href="tel:+79504454884"
+          :href="`tel:${contacts.phone}`"
           target="_target"
           rel="noopener"
       >
         <i class="far fa-phone HeaderContact__icon--phone"></i>
-        <span class="Contact__name HeaderContact__name HeaderContact__name--phone">+7&nbsp;(950)&nbsp;445-48-84</span>
+        <span class="Contact__name HeaderContact__name HeaderContact__name--phone">{{ contacts.phone }}</span>
       </a>
       <div class="Header__actionButton">
         <button
@@ -72,6 +75,7 @@
 
 <script>
 import logo from '@/assets/images/logo.jpg';
+import { contacts } from '@/assets/js/contacts';
 
 export default {
   data() {
@@ -79,7 +83,8 @@ export default {
       isLightTheme: this.$route.meta.isHomePage,
       isModalVisible: false,
       isScrolled: false,
-      logo
+      logo,
+      contacts,
     };
   },
   mounted() {
@@ -125,7 +130,7 @@ export default {
   left: 0;
   right: 0;
   padding: 12px 16px;
-  z-index: $second-layer-z-index;
+  z-index: $foreground-layer-z-index;
 
 
   &__groupWrap {

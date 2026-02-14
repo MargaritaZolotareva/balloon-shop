@@ -83,12 +83,12 @@ func (pc *ProductController) GetProductsByCategory(c *gin.Context) {
 	}
 
 	var limit int
-	var products []api.ProductsSectionResponse
+	var productsByCat api.GetProductsByCategoryResponse
 	limit, err = pc.productService.GetLimitParam(c)
 	if err != nil || limit < 1 {
-		products, err = pc.productRepository.GetProductsByCategory(int(categoryID), 0)
+		productsByCat, err = pc.productRepository.GetProductsByCategory(int(categoryID), 0)
 	} else {
-		products, err = pc.productRepository.GetProductsByCategory(int(categoryID), limit)
+		productsByCat, err = pc.productRepository.GetProductsByCategory(int(categoryID), limit)
 	}
 
 	if err != nil {
@@ -105,5 +105,5 @@ func (pc *ProductController) GetProductsByCategory(c *gin.Context) {
 	}
 
 	metrics.SuccessCounter.WithLabelValues("200").Inc()
-	c.JSON(http.StatusOK, products)
+	c.JSON(http.StatusOK, productsByCat)
 }

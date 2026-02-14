@@ -1,7 +1,7 @@
 <template>
   <div class="main-block" id="top">
     <h2 class="block__title block__title--default">
-      <div class="block__titleWrap">{{ section.title }}</div>
+      <div class="block__titleWrap">{{ category_title }}</div>
     </h2>
     <div class="block-content">
       <div class="items-wrap" v-if="products.length > 0">
@@ -39,7 +39,8 @@ export default {
   },
   data() {
     return {
-      products: []
+      products: [],
+      category_title: ""
     };
   },
   props: {
@@ -61,8 +62,9 @@ export default {
         const apiUrl = process.env.VUE_APP_API_URL;
         const productsCnt = 5;
         const response = await axios.get(`${apiUrl}/categories/${this.categoryId}/products?limit=${productsCnt}`);
-        this.products = await response.data;
-        console.log(response.data);
+        const data = await response.data;
+        this.products = data.products;
+        this.category_title = data.category_title;
       } catch (error) {
         console.error('Ошибка при получении списка товаров:', error);
       }

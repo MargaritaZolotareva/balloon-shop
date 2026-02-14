@@ -1,10 +1,10 @@
 <template>
-  <div v-if="category" class="CategoryPage">
+  <div v-if="category_title" class="CategoryPage">
     <button class="Button Button--rounded Button--defaultSize CategoryPage__closeButton" @click="goBack">
       <i class="far fa-arrow-left CloseButtonIcon"></i>
     </button>
     <h2 class="Block__title Block__title--default">
-      <div class="Block__titleWrap">{{ category.title }}</div>
+      <div class="Block__titleWrap">{{ category_title }}</div>
     </h2>
     <div class="Block__content">
       <div class="items-wrap" v-if="products.length > 0">
@@ -28,30 +28,22 @@ export default {
   components: {ProductSmallContent},
   data() {
     return {
-      category: null,
+      category_title: "",
       products: []
     }
   },
   mounted() {
     const categoryId = this.$route.params.id;
-    this.fetchCategoryData(categoryId);
     this.fetchCategoryProducts(categoryId)
   },
   methods: {
-    async fetchCategoryData(categoryId) {
-      try {
-        const apiUrl = process.env.VUE_APP_API_URL;
-        const response = await axios.get(`${apiUrl}/categories/${categoryId}`);
-        this.category = await response.data;
-      } catch (error) {
-        console.error("Ошибка при загрузке категории:", error);
-      }
-    },
     async fetchCategoryProducts(categoryId) {
       try {
         const apiUrl = process.env.VUE_APP_API_URL;
         const response = await axios.get(`${apiUrl}/categories/${categoryId}/products`);
-        this.products = await response.data;
+        const data = await response.data;
+        this.products = data.products;
+        this.category_title = data.category_title;
       } catch (error) {
         console.error("Ошибка при загрузке товаров категории:", error);
       }
@@ -65,11 +57,8 @@ export default {
 
 <style scoped lang="scss">
 .CategoryPage {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  display: flex;
+  flex-direction: column;
   padding: 100px 0 30px 0;
 
   &__photo {
@@ -236,7 +225,7 @@ export default {
 
 @media (min-width: 1000px) {
   .CategoryPage {
-    padding: 120px 100px 0 100px;
+    padding: 120px 100px 50px 100px;
 
     &__photo {
       display: inline-block;
@@ -327,7 +316,7 @@ export default {
       width: 56px;
       height: 56px;
       cursor: pointer;
-      z-index: $foreground-layer-z-index;
+      z-index: $second-layer-z-index;
     }
     .Block {
       &__title {

@@ -17,7 +17,8 @@
                     <div class="Slider__item">
                       <div class="Slider__itemContent">
                         <div class="Content__attachmentImage"
-                             data-src="https://sun112-1.userapi.com/impg/YQtJU2t1EmWkHjRnVN6M9NTHzHFGNCvGk3TKUw/Knph3TnUT_8.jpg?size=800x0&amp;quality=90&amp;sign=fd0d713f26c832365df89379ae5d2784"
+                             :data-src="delivery_zones"
+                             :style="{backgroundImage: `url(${delivery_zones})`}"
                              loading="lazy"></div>
                       </div>
                     </div>
@@ -45,15 +46,25 @@
         </div>
         <div class="Content__attachments">
           <div class="Content__attachmentImage"
-               data-src="https://sun112-1.userapi.com/impg/YQtJU2t1EmWkHjRnVN6M9NTHzHFGNCvGk3TKUw/Knph3TnUT_8.jpg?size=800x0&amp;quality=90&amp;sign=fd0d713f26c832365df89379ae5d2784"
-               style="background-image: url(&quot;https://sun112-1.userapi.com/impg/YQtJU2t1EmWkHjRnVN6M9NTHzHFGNCvGk3TKUw/Knph3TnUT_8.jpg?size=800x0&amp;quality=90&amp;sign=fd0d713f26c832365df89379ae5d2784&quot;);"></div>
+               :data-src="delivery_zones"
+               :style="{backgroundImage: `url(${delivery_zones})`}"></div>
         </div>
       </div>
     </div>
   </div>
 </template>
 
+<script>
+import delivery_zones from '@/assets/images/delivery_zones.jpg';
 
+export default {
+  data() {
+    return {
+      delivery_zones
+    };
+  },
+}
+</script>
 <style scoped lang="scss">
 .Content {
   &__innerBlock {
@@ -82,6 +93,10 @@
 
   &__attachments {
     display: none;
+  }
+
+  &__attachmentsSlider {
+    padding-bottom: 32px;
   }
 }
 
@@ -127,5 +142,3 @@
   }
 }
 </style>
-<script setup lang="ts">
-</script>

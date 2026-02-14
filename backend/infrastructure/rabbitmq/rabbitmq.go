@@ -3,6 +3,7 @@ package rabbitmq
 import (
 	"fmt"
 	amqp "github.com/rabbitmq/amqp091-go"
+	"log"
 	"os"
 )
 
@@ -15,8 +16,21 @@ type MqInterface interface {
 	PublishMessage(queueName string, message string) error
 }
 
-func NewRabbitMQ() (*RabbitMQ, error) {
+func InitRabbitMq() *RabbitMQ {
+	rmq, err := NewRabbitMQ()
+	if err != nil {
+		log.Fatalf("failed to connect to RabbitMQ: %v", err)
+	}
 
+	_, err = rmq.DeclareQueue(os.Getenv("RABBITMQ_LEAD_QUEUE_NAME"))
+	if err != nil {
+		log.Fatalf("failed to create queue: %v", err)
+	}
+
+	return rmq
+}
+
+func NewRabbitMQ() (*RabbitMQ, error) {
 	connStr := fmt.Sprintf(
 		"amqp://%s:%s@%s:%s/",
 		os.Getenv("RABBITMQ_DEFAULT_USER"),

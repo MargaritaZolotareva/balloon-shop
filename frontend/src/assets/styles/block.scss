@@ -3,7 +3,7 @@
         margin-top: 80px;
     }
     &__content {
-         padding-top: 32px;
+         padding: 32px 0;
      }
     &__title {
          font-size: calc($section_font_size_offset + 24px);
@@ -24,7 +24,7 @@
         padding: 0 34px;
 
         &__content {
-             padding-top: 40px;
+            padding: 40px 0;
          }
         &+.Block {
              margin-top: 160px;

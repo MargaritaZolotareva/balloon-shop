@@ -4,6 +4,7 @@
   <LeadPopUp @open-modal="openLeadModal"/>
   <LeadModal v-if="isModalShown" @close="closeLeadModal" @form-submitted="showSuccessModal"/>
   <LeadModalSent v-if="isLeadModalSentShown" @close="closeLeadSentModal"/>
+  <Footer />
 </template>
 
 <script>
@@ -11,11 +12,13 @@ import Header from './components/SiteHeader.vue';
 import LeadPopUp from './components/Modal/LeadPopUp.vue';
 import LeadModal from './components/Modal/LeadModal.vue';
 import LeadModalSent from './components/Modal/LeadModalSent.vue';
+import Footer from "@/components/SiteFooter.vue";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export default {
   name: 'App',
   components: {
+    Footer,
     Header,
     LeadPopUp,
     LeadModal,
@@ -64,6 +67,9 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li {
   -moz-osx-font-smoothing: auto;
   padding: 0;
   margin: 0;
+}
+footer {
+  margin-top: auto;
 }
 .far, .far:before {
   font-family: 'FontAwesome', sans-serif;

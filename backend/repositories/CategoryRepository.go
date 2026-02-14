@@ -1,12 +1,14 @@
 package repositories
 
 import (
+	"backend/api"
 	"backend/models"
 	"gorm.io/gorm"
 )
 
 type CategoryRepository interface {
 	GetCategory(categoryID int) (models.Category, error)
+	GetAllCategories() ([]api.CategoriesResponse, error)
 }
 type CategoryRepositoryImpl struct {
 	DB *gorm.DB
@@ -24,4 +26,17 @@ func (ps *CategoryRepositoryImpl) GetCategory(categoryID int) (models.Category, 
 	}
 
 	return category, nil
+}
+
+func (ps *CategoryRepositoryImpl) GetAllCategories() ([]api.CategoriesResponse, error) {
+	var categories []api.CategoriesResponse
+
+	if err := ps.DB.Table("categories").
+		Joins("LEFT JOIN photos ON photos.id = categories.photo_id").
+		Select("categories.id, categories.title, photos.photo_path AS photo").
+		Find(&categories).Error; err != nil {
+		return []api.CategoriesResponse{}, err
+	}
+
+	return categories, nil
 }

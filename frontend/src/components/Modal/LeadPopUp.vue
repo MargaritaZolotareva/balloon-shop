@@ -6,7 +6,7 @@
         <img class="LeadFormWidget__avatar" :src="logo"></div>
       <div class="LeadFormWidget__content"
            @click="$emit('open-modal')">
-        <div class="LeadFormWidget__header">Появятся вопросы — пишите! Или звоните 89504454884</div>
+        <div class="LeadFormWidget__header">Появятся вопросы — пишите! Или звоните <a :href="`tel:${contacts.phone}`">{{ contacts.phone }}</a></div>
         <div class="LeadFormWidget__subheader">Ответим в ближайшее время 😉</div>
         <button class="Button Button--secondary Button--defaultSize LeadFormWidget__button">Оставить заявку</button>
       </div>
@@ -28,13 +28,15 @@
 
 <script>
 import logo from '@/assets/images/logo.jpg';
+import { contacts } from '@/assets/js/contacts';
 
 export default {
   name: "LeadPopUp",
   data() {
     return {
       logo,
-      isFormShown: true
+      isFormShown: true,
+      contacts,
     };
   },
   methods: {
@@ -170,6 +172,11 @@ export default {
     background: $black_alpha8;
     color: $static_white;
     font-size: 24px;
+  }
+
+  a {
+    color: $black;
+    text-decoration: none;
   }
 }
 

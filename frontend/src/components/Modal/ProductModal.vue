@@ -77,7 +77,7 @@
           </div>
           <div class="ProductCart__buttons">
             <a
-                href="https://vk.com/im?sel=-27526995"
+                href="https://vk.me/podarokk.shop"
                 target="_blank"
                 rel="noreferrer noopener"
                 class="Link Link--buttonPrimary ActionButton--productCartButton"
@@ -229,10 +229,8 @@ export default {
       const container = this.$refs.similarSlidesContainer;
       const slide = container ? container.children[0] : null;
 
-      console.log(slide);
       if (slide) {
         this.similarSlideWidth = slide.clientWidth;
-        console.log('Similar slide width: ', this.similarSlideWidth);
       }
     },
     moveSimilarSlide(direction) {
@@ -542,12 +540,10 @@ export default {
     &__similarProdSliderNavButtonIcon {
       &--left {
         position: absolute;
-        right: 3px;
       }
 
       &--right {
         position: absolute;
-        right: 1px;
       }
     }
 

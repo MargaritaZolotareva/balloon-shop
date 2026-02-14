@@ -34,13 +34,12 @@ func (cc *CategoryController) GetCategory(c *gin.Context) {
 	var category models.Category
 	category, err = cc.categoryRepository.GetCategory(categoryID)
 	if err != nil {
+		sentry.CaptureException(err)
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			sentry.CaptureException(err)
 			metrics.Error404Counter.WithLabelValues("404").Inc()
 			api.SendError(c, http.StatusNotFound, "Товар не найден")
 			return
 		}
-		sentry.CaptureException(err)
 		metrics.Error500Counter.WithLabelValues("500").Inc()
 		api.SendError(c, http.StatusInternalServerError, "Не удалось получить данные о категории")
 		return
@@ -48,4 +47,18 @@ func (cc *CategoryController) GetCategory(c *gin.Context) {
 
 	metrics.SuccessCounter.WithLabelValues("200").Inc()
 	c.JSON(http.StatusOK, category)
+}
+
+func (cc *CategoryController) GetCategoriesList(c *gin.Context) {
+	categories, err := cc.categoryRepository.GetAllCategories()
+
+	if err != nil {
+		sentry.CaptureException(err)
+		metrics.Error500Counter.WithLabelValues("500").Inc()
+		api.SendError(c, http.StatusInternalServerError, "Не удалось получить данные о категориях")
+		return
+	}
+
+	metrics.SuccessCounter.WithLabelValues("200").Inc()
+	c.JSON(http.StatusOK, categories)
 }

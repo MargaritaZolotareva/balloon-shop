@@ -7,7 +7,7 @@ import (
 )
 
 type ProductRepository interface {
-	GetProductsByCategory(categoryID int, limit int) ([]api.ProductsSectionResponse, error)
+	GetProductsByCategory(categoryID int, limit int) (api.GetProductsByCategoryResponse, error)
 	GetSimilarProducts(categoryID int, productID int) ([]api.SimilarProductResponse, error)
 	GetProduct(productID int) (models.Product, error)
 }
@@ -21,12 +21,14 @@ func NewProductRepository(db *gorm.DB) ProductRepository {
 	return &ProductRepositoryImpl{DB: db}
 }
 
-func (ps *ProductRepositoryImpl) GetProductsByCategory(categoryID int, limit int) ([]api.ProductsSectionResponse, error) {
+func (ps *ProductRepositoryImpl) GetProductsByCategory(categoryID int, limit int) (api.GetProductsByCategoryResponse, error) {
 	var products []api.ProductsSectionResponse
+	var categoryTitle string
 
 	query := ps.DB.Table("products").
-		Select("products.id, products.title, products.price, photos.photo_path as photo").
+		Select("products.id, products.title, products.price, photos.photo_path as photo, categories.title as category_title").
 		Joins("LEFT JOIN photos ON photos.product_id = products.id").
+		Joins("LEFT JOIN categories ON categories.id = products.category_id").
 		Where("products.category_id = ?", categoryID).
 		Order("photos.pic_order ASC")
 
@@ -35,10 +37,17 @@ func (ps *ProductRepositoryImpl) GetProductsByCategory(categoryID int, limit int
 	}
 
 	if err := query.Find(&products).Error; err != nil {
-		return nil, err
+		return api.GetProductsByCategoryResponse{}, err
 	}
 
-	return products, nil
+	if len(products) > 0 {
+		categoryTitle = products[0].CategoryTitle
+	}
+
+	return api.GetProductsByCategoryResponse{
+		CategoryTitle: categoryTitle,
+		Products:      products,
+	}, nil
 }
 
 func (ps *ProductRepositoryImpl) GetSimilarProducts(categoryID int, productID int) ([]api.SimilarProductResponse, error) {

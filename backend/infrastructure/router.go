@@ -39,12 +39,14 @@ func SetupRouter(db *gorm.DB, rmq *rabbitmq.RabbitMQ, tracer *zipkin.Tracer) *gi
 
 	r.Use(zipkinMiddleware(tracer))
 
-	r.GET("/metrics", gin.WrapH(promhttp.Handler()))
-	r.POST("/lead-form", messageController.SendLeadMessage)
-	r.GET("/products/:id", productController.GetProduct)
-	r.GET("/categories/:id", categoryController.GetCategory)
-	r.GET("/categories/:id/products", productController.GetProductsByCategory)
-	r.GET("/photos/:filename", photosHandler())
+	apiPref := r.Group("/api")
+	apiPref.GET("/metrics", gin.WrapH(promhttp.Handler()))
+	apiPref.POST("/lead-form", messageController.SendLeadMessage)
+	apiPref.GET("/products/:id", productController.GetProduct)
+	apiPref.GET("/categories", categoryController.GetCategoriesList)
+	apiPref.GET("/categories/:id", categoryController.GetCategory)
+	apiPref.GET("/categories/:id/products", productController.GetProductsByCategory)
+	apiPref.GET("/photos/:filename", photosHandler())
 
 	return r
 }

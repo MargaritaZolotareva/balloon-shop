@@ -3,6 +3,7 @@ services:
     build:
       context: ../backend
       dockerfile: Dockerfile
+    container_name: backend
     volumes:
       - ../backend:/app
     working_dir: /app
@@ -15,17 +16,6 @@ services:
     depends_on:
       - db
     command: ["/build/balloon-shop"]
-
-  frontend:
-    build: ../frontend
-    env_file:
-      - ../.env
-    ports:
-      - "8081:8080"
-    volumes:
-      - ../frontend:/app
-    networks:
-      - app-network
 
   db:
     image: postgres:alpine
@@ -43,10 +33,10 @@ services:
     build:
       context: ..
       dockerfile: nginx/Dockerfile
+    container_name: nginx
     ports:
       - "80:80"
     depends_on:
-      - frontend
       - backend
     networks:
       - app-network
@@ -99,7 +89,6 @@ services:
 networks:
   app-network:
     driver: bridge
-    external: true
 
 volumes:
   postgres_data:

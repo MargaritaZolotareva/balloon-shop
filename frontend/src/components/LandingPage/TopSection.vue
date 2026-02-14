@@ -11,7 +11,7 @@
         <span class="Top__desc">{{ description }}</span>
       </h2>
       <div class="Top__actionButtonWrap">
-        <button class="Button ActionButton ActionButton--top" @click="openModal">
+        <button class="Button ActionButton ActionButton--top" @click="openLeadModal">
           {{ buttonText }}
         </button>
       </div>
@@ -35,7 +35,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: 'PODAROKK | Гелиевые шары с доставкой в Перми'
+      default: 'ПОДАРОКК | Гелиевые шары с доставкой в Перми'
     },
     description: {
       type: String,
@@ -54,9 +54,6 @@ export default {
         left: 0,
         behavior: "smooth",
       });
-    },
-    openModal() {
-      this.openLeadModal();
     }
   }
 };

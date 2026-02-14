@@ -18,30 +18,41 @@
               <label class="FormLayoutGroup">
                 <div class="FormLayoutGroup__label">Номер телефона<span
                     class="FormLayoutGroup__labelRequiredChar"> *</span></div>
-                <div class="FormLayoutGroup__content"><input type="tel" placeholder=" " autocomplete="tel" class="Input"
-                                                             value="" v-model="phone"></div>
+                <div class="FormLayoutGroup__content">
+                  <input type="tel" placeholder=" " autocomplete="tel" class="Input"
+                                                             value="" v-model="formData.phone">
+                  <div v-if="errors.phone" class="error">{{ errors.phone }}</div>
+                </div>
               </label>
               <label class="FormLayoutGroup">
-                <div class="FormLayoutGroup__label">Имя</div>
-                <div class="FormLayoutGroup__content"><input type="text" placeholder=" " autocomplete="given-name"
-                                                             class="Input" value="" v-model="name"></div>
+                <div class="FormLayoutGroup__label">Имя<span
+                    class="FormLayoutGroup__labelRequiredChar"> *</span></div>
+                <div class="FormLayoutGroup__content">
+                  <input type="text" placeholder=" " autocomplete="given-name"
+                                                             class="Input" value="" v-model="formData.name">
+                  <div v-if="errors.name" class="error">{{ errors.name }}</div>
+                </div>
               </label>
               <label class="FormLayoutGroup">
                 <div class="FormLayoutGroup__label">Сообщение</div>
-                <div class="FormLayoutGroup__content"><textarea placeholder=" " class="Textarea"
-                                                                v-model="message"></textarea></div>
+                <div class="FormLayoutGroup__content">
+                  <textarea placeholder=" " class="Textarea"
+                                                                v-model="formData.message"></textarea>
+                  <div v-if="errors.message" class="error">{{ errors.message }}</div>
+                </div>
               </label>
               <label class="CheckBox CheckBox--default LeadForm__agreeCheckBox">
                 <input class="CheckBox__input" type="checkbox"
-                       v-model="isChecked">
+                       v-model="formData.isChecked">
                 <div class="CheckBox__indicator" aria-hidden="true">
-                  <i v-if="isChecked" class="far fa-square-check CheckBox__indicatorIcon"></i>
+                  <i v-if="formData.isChecked" class="far fa-square-check CheckBox__indicatorIcon"></i>
                 </div>
                 <!--                    TODO: добавить ссылку на политику конфиденциальности-->
-                <span>Отправляя форму, вы соглашаетесь с <a href="" target="_blank" rel="noopener noreferrer"
+                <span>Отправляя форму, вы соглашаетесь с <a href="privacy" target="_blank" rel="noopener noreferrer"
                                                             class="Link Link--default">политикой конфиденциальности</a></span>
+                <div v-if="errors.isChecked" class="error">{{ errors.isChecked }}</div>
               </label>
-              <button :disabled="!isChecked" class="SectionButton">
+              <button type="submit" :disabled="!formData.isChecked" class="SectionButton">
                 <div class="SectionButton__border">
                   <div class="SectionButton__background">
                     <div class="SectionButton__text">Оставить заявку</div>
@@ -56,33 +67,77 @@
   </div>
 </template>
 <script>
+import axios from 'axios';
+
 export default {
   name: 'LeadModal',
   data() {
     return {
-      isChecked: false,
-      phone: '',
-      name: '',
-      message: ''
+      formData: {
+        name: '',
+        phone: '',
+        message: '',
+        isChecked: false
+      },
+      isSubmitting: false,
+      errors: {},
+      statusMessage: '',
+      statusClass: '',
     };
   },
   methods: {
     close() {
       this.$emit('close');
     },
-    submitForm() {
-      if (this.phone && this.name && this.isChecked) {
-        this.$emit('form-submitted');
-        console.log("Событие заэмичено");
-        this.close();
-      } else {
-        alert("Пожалуйста, заполните все поля и примите условия.");
+    async submitForm() {
+      console.log("Метод обработчик вызван")
+      if (!this.validateForm()) {
+        return;
       }
-    }
+
+      this.isSubmitting = true;
+      try {
+        const apiUrl = process.env.VUE_APP_API_URL;
+        const response = await axios.post(`${apiUrl}/lead-form`, this.formData);
+
+        if (response.status === 200) {
+          this.$emit('form-submitted');
+        }
+      } catch (error) {
+        this.statusMessage = 'Произошла ошибка при отправке формы. Попробуйте снова.';
+        this.statusClass = 'error';
+      } finally {
+        this.isSubmitting = false;
+      }
+    },
+    validateForm() {
+      this.errors = {};
+
+      if (!this.formData.name) {
+        this.errors.name = 'Имя обязательно';
+      }
+
+      const phoneRegex = /^\+?[0-9]{10,15}$/;
+      if (!this.formData.phone || !phoneRegex.test(this.formData.phone)) {
+        this.errors.phone = 'Введите корректный номер телефона';
+      }
+
+      console.log(this.errors)
+      if (!this.formData.isChecked) {
+        return false;
+      }
+
+      return Object.keys(this.errors).length === 0;
+    },
   }
 };
 </script>
 <style scoped lang="scss">
+.error {
+  color: red;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
 .LeadForm {
   padding: 80px 24px;
   margin-top: 0;

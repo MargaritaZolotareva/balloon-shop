@@ -12,10 +12,16 @@ type PhotoResponse struct {
 }
 
 type ProductsSectionResponse struct {
-	ID    int     `json:"id"`
-	Title string  `json:"title"`
-	Price float64 `json:"price"`
-	Photo string  `json:"photo"`
+	ID            int     `json:"id"`
+	Title         string  `json:"title"`
+	Price         float64 `json:"price"`
+	Photo         string  `json:"photo"`
+	CategoryTitle string  `json:"category_title"`
+}
+
+type GetProductsByCategoryResponse struct {
+	CategoryTitle string                    `json:"category_title"`
+	Products      []ProductsSectionResponse `json:"products"`
 }
 
 type ProductResponse struct {
@@ -26,4 +32,10 @@ type ProductResponse struct {
 	Category        int                      `json:"category"`
 	Photos          []PhotoResponse          `json:"photos"`
 	SimilarProducts []SimilarProductResponse `json:"similarProducts"`
+}
+
+type CategoriesResponse struct {
+	ID    int    `json:"id"`
+	Title string `json:"title"`
+	Photo string `json:"photo"`
 }

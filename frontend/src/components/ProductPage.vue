@@ -84,7 +84,7 @@
             <a href="viber://chat?number=yourphonenumber" target="_blank" rel="noopener noreferrer" class="Dropdown__item">
               Viber
             </a>
-            <a href="https://vk.com/im?sel=-27526995" target="_blank" rel="noopener noreferrer" class="Dropdown__item">
+            <a href="https://vk.me/podarokk.shop" target="_blank" rel="noopener noreferrer" class="Dropdown__item">
               VK
             </a>
           </div>
@@ -130,7 +130,7 @@
                 class="Button Button--rounded Button--bigSize SlideButton SlideButton--left Slider__navButton ProductPage__similarProdSliderNavButton"
                 :class="{ 'SlideButton--disabled': similarActiveSlide === 0 }"
                 @click="moveSimilarSlide(-1)">
-              <i class="fat fa-angle-left ProductPage__similarProdSliderNavButtonIcon--left SlideButton__icon SlideButton__icon--left"></i>
+              <i class="far fa-angle-left ProductPage__similarProdSliderNavButtonIcon--left SlideButton__icon SlideButton__icon--left"></i>
             </button>
           </div>
           <div
@@ -142,7 +142,7 @@
                     similarActiveSlide >= product.similarProducts.length - similarVisibleCount
                 }"
                 @click="moveSimilarSlide(1)">
-              <i class="fat fa-angle-right ProductPage__similarProdSliderNavButtonIcon--right SlideButton__icon SlideButton__icon--right"></i>
+              <i class="far fa-angle-right ProductPage__similarProdSliderNavButtonIcon--right SlideButton__icon SlideButton__icon--right"></i>
             </button>
           </div>
         </div>
@@ -154,8 +154,6 @@
 
 <script>
 import axios from 'axios';
-
-
 export default {
   name: 'ProductPage',
   data() {
@@ -186,6 +184,10 @@ export default {
     window.addEventListener('resize', this.calculateSimilarSlideWidth);
     document.addEventListener('click', this.handleClickOutside);
   },
+  beforeRouteUpdate(to, from, next) {
+    this.fetchProduct(to.params.id);
+    next();
+  },
   methods: {
     async fetchProduct(id) {
       try {
@@ -197,10 +199,8 @@ export default {
       }
     },
     setActiveSlide(index) {
-      console.log('activeSlide', this.activeSlide);
       this.activeSlide = index;
       this.translateX = -this.activeSlide * this.slideWidth;
-      console.log(index);
     },
     moveSlide(direction) {
       let newIndex = this.activeSlide + direction;
@@ -253,7 +253,6 @@ export default {
 
       if (slide) {
         this.similarSlideWidth = slide.clientWidth;
-        console.log('Similar slide width: ', this.similarSlideWidth);
       }
     },
     moveSimilarSlide(direction) {
@@ -301,12 +300,13 @@ export default {
 
 <style scoped lang="scss">
 .ProductPage {
-  position: absolute;
+  display: flex;
+  flex-direction: column;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 60px 0 0 0;
+  padding: 60px 0 30px 0;
 
   &__photo {
     width: 100vw;
@@ -516,10 +516,11 @@ export default {
   .ProductPage {
     position: static;
     display: flex;
+    flex-direction: row;
     overflow: hidden;
     border-radius: $elements_section_radius;
     min-height: 520px;
-    padding: 60px 100px 0 100px;
+    padding: 60px 100px 50px 100px;
 
     &__photo {
       display: inline-block;
@@ -608,12 +609,10 @@ export default {
     &__similarProdSliderNavButtonIcon {
       &--left {
         position: absolute;
-        right: 3px;
       }
 
       &--right {
         position: absolute;
-        right: 1px;
       }
     }
 

@@ -11,19 +11,17 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "CategoryItemSmall",
-  props: {
-    category: Object
-  },
-  methods: {
-    getImageUrl(photoPath) {
-      const apiHost = process.env.VUE_APP_API_URL;
-      return `${apiHost}/${photoPath}`;
-    }
+<script setup>
+defineProps({
+  category: {
+    type: Object,
+    required: true
   }
-};
+})
+const getImageUrl = (photoPath) => {
+  const apiHost = process.env.VUE_APP_API_URL
+  return `${apiHost}/${photoPath}`
+}
 </script>
 
 <style scoped lang="scss">
@@ -55,14 +53,12 @@ export default {
 
   &__name {
     color: $gray_dark;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 18px;
     padding-top: 12px;
     padding-bottom: 2px;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
-    display: -webkit-box;
-    overflow: hidden;
   }
 
   .hover-content {

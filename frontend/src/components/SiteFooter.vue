@@ -5,19 +5,19 @@
       <div class="footer__nav">
         <ul>
           <li>
-            <RouterLink to="/categories">Каталог</RouterLink>
+            <a href="/categories">Каталог</a>
           </li>
           <li>
-            <RouterLink to="/delivery">Доставка и оплата</RouterLink>
+            <a href="/delivery">Доставка и оплата</a>
           </li>
           <li>
-            <RouterLink to="/categories/0/products">Акции</RouterLink>
+            <a href="/categories/0/products">Акции</a>
           </li>
           <li>
-            <RouterLink to="/contacts">Контакты</RouterLink>
+            <a href="/contacts">Контакты</a>
           </li>
           <li>
-            <RouterLink to="/privacy">Политика конфиденциальности</RouterLink>
+            <a href="/privacy">Политика конфиденциальности</a>
           </li>
         </ul>
       </div>
@@ -54,8 +54,6 @@
 </template>
 
 <script setup>
-import {RouterLink} from 'vue-router';
-
 const year = new Date().getFullYear()
 </script>
 

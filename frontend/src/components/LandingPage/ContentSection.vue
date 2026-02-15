@@ -9,23 +9,6 @@
             <div class="Block__titleWrap">Часто задаваемые вопросы</div>
           </h2>
           <div class="Block__content Block__content--default Content__innerBlockContent">
-            <div>
-              <div class="Slider Content__attachmentsSlider">
-                <div class="Slider__touchableArea">
-                  <div class="Slider__itemsWrap"
-                       style="transform: translateX(0px); transition: transform 0.25s cubic-bezier(0.1, 0, 0.25, 1);">
-                    <div class="Slider__item">
-                      <div class="Slider__itemContent">
-                        <div class="Content__attachmentImage"
-                             :data-src="delivery_zones"
-                             :style="{backgroundImage: `url(${delivery_zones})`}"
-                             loading="lazy"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
             <div class="Content__desc">
               - Как получить скидку на гелиевые шары?
               Скидка предоставляется при заказе не позднее, чем за сутки, через группу, по телефону или в отделе и 100%
@@ -39,15 +22,14 @@
               Да, все латексные шары в композициях мы обрабатываем пропиткой для долгого полёта.
               <br/><br>
               - Сколько стоит доставка?
-              Доставка по Перми от 100р в зависимости от адреса. Примерная стоимость доставки указана на картинке, в
+              Доставка по Перми от 200р в зависимости от адреса. Примерная стоимость доставки указана на карте, в
               неотмеченные зоны стоимость доставки рассчитывается индивидуально.
             </div>
           </div>
         </div>
         <div class="Content__attachments">
-          <div class="Content__attachmentImage"
-               :data-src="delivery_zones"
-               :style="{backgroundImage: `url(${delivery_zones})`}"></div>
+          <iframe src="https://www.google.com/maps/d/embed?mid=1l-B1xdWuZ1hSwNoD-tlMAFD7vCtgJeRL&hl=ru&ehbc=2E312F"
+                  width="100%" height="480" loading="lazy"></iframe>
         </div>
       </div>
     </div>
@@ -69,14 +51,6 @@ export default {
 .Content {
   &__innerBlock {
     padding: 0;
-  }
-
-  &__attachmentImage {
-    height: 56vw;
-    background-position: center;
-    background-size: cover;
-    background-color: $photo_background_color;
-    background-repeat: no-repeat;
   }
 
   &__desc {
@@ -120,14 +94,6 @@ export default {
 
     &__attachmentsSlider {
       padding-bottom: 32px;
-    }
-
-    &__attachmentImage {
-      min-width: 585px;
-      height: 329px;
-      border-radius: $elements_section_radius;
-      border: .5px solid $photo_border_color;
-      cursor: pointer;
     }
 
     &__desc, &__actionButtonWrap {

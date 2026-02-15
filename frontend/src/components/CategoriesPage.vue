@@ -17,36 +17,33 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import axios from 'axios';
+
 import CategorySmallContent from "@/components/CategoriesPage/CategorySmallContent.vue";
 
-export default {
-  name: 'CategoriesPage',
-  components: {CategorySmallContent},
-  data() {
-    return {
-      categories: []
-    }
-  },
-  mounted() {
-    this.fetchCategories()
-  },
-  methods: {
-    async fetchCategories() {
-      try {
-        const apiUrl = process.env.VUE_APP_API_URL;
-        const response = await axios.get(`${apiUrl}/categories`);
-        this.categories = await response.data;
-      } catch (error) {
-        console.error("Ошибка при загрузке категорий:", error);
-      }
-    },
-    goBack() {
-      this.$router.back();
-    },
-  },
-};
+const categories = ref([])
+const router = useRouter()
+
+const fetchCategories = async () => {
+  try {
+    const apiUrl = process.env.VUE_APP_API_URL
+    const response = await axios.get(`${apiUrl}/categories`)
+    categories.value = await response.data
+  } catch (error) {
+    console.error('Ошибка при загрузке категорий:', error)
+  }
+}
+
+const goBack = () => {
+  router.back()
+}
+
+onMounted(() => {
+  fetchCategories()
+})
 </script>
 
 <style scoped lang="scss">
@@ -114,6 +111,7 @@ export default {
     left: 0;
     right: 0;
   }
+
   &__closeButton {
     position: absolute;
     top: 87px;
@@ -127,6 +125,7 @@ export default {
     cursor: pointer;
     z-index: 1;
   }
+
   &__price {
     display: inline-flex;
     align-items: center;
@@ -210,6 +209,7 @@ export default {
     vertical-align: middle;
   }
 }
+
 .items-wrap {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -299,6 +299,7 @@ export default {
         right: 0;
       }
     }
+
     &__closeButton {
       position: absolute;
       top: 115px;
@@ -312,6 +313,7 @@ export default {
       cursor: pointer;
       z-index: $foreground-layer-z-index;
     }
+
     .Block {
       &__title {
         text-align: center;

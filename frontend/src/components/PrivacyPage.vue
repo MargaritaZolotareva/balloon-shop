@@ -10,7 +10,7 @@
     <div class="Block__content">
       <section>
         <h2>1. Основные понятия</h2>
-        <p><strong>1.1. Сайт</strong> – интернет-магазин воздушных шаров "Подарок", доступный через сайт <a href="http://example.com">example.com</a> и мобильную версию сайта.</p>
+        <p><strong>1.1. Сайт</strong> – интернет-магазин воздушных шаров "Подарокк", доступный через сайт <a href="http://example.com">example.com</a> и мобильную версию сайта.</p>
         <p><strong>1.2. Оператор персональных данных (Оператор)</strong> – ИП Золотарёва Е.Ю., Пермь, Тургенева, 21, лицо, осуществляющее обработку персональных данных Пользователя в соответствии с условиями настоящей Политики.</p>
         <p><strong>1.3. Пользователь</strong> – физическое лицо, использующее Сайт и предоставляющее Оператору свои персональные данные в процессе взаимодействия с Сайтом.</p>
         <p><strong>1.4. Политика</strong> – настоящая Политика конфиденциальности, регулирующая порядок обработки и защиты персональных данных Пользователей.</p>
@@ -112,8 +112,9 @@ export default {
   padding: 100px 20px 30px 20px;
 
   &__closeButton {
-    position: relative;
+    position: absolute;
     left: -5px;
+    top: 87px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -160,6 +161,11 @@ a:hover {
 @media (min-width: 1000px) {
   .PrivacyPage {
     padding: 120px 100px 0 100px;
+
+    &__closeButton {
+      left: 25px;
+      top: 115px;
+    }
 
     &__textBlock {
       margin-bottom: 32px;

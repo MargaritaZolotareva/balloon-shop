@@ -19,8 +19,6 @@
                 {'HeaderContact--light': isLightTheme,
                  'HeaderContact--dark': !isLightTheme}]"
             :href="`tel:${contacts.phone}`"
-            target="_target"
-            rel="noopener"
         >
           <i class="far fa-phone HeaderContact__icon--phone"></i>
           <span class="Contact__name HeaderContact__name HeaderContact__name--phone">+7&nbsp;(950)&nbsp;445-48-84</span>
@@ -53,8 +51,6 @@
                  { 'HeaderContact--light': isLightTheme,
                    'HeaderContact--dark': !isLightTheme } ]"
           :href="`tel:${contacts.phone}`"
-          target="_target"
-          rel="noopener"
       >
         <i class="far fa-phone HeaderContact__icon--phone"></i>
         <span class="Contact__name HeaderContact__name HeaderContact__name--phone">{{ contacts.phone }}</span>
@@ -73,51 +69,48 @@
   </header>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+
 import logo from '@/assets/images/logo.jpg';
 import { contacts } from '@/assets/js/contacts';
 
-export default {
-  data() {
-    return {
-      isLightTheme: this.$route.meta.isHomePage,
-      isModalVisible: false,
-      isScrolled: false,
-      logo,
-      contacts,
-    };
-  },
-  mounted() {
-    window.addEventListener('scroll', this.handleScroll);
-  },
-  unmounted() {
-    window.removeEventListener('scroll', this.handleScroll);
-  },
-  methods: {
-    handleScroll() {
-      if (this.$route.meta.isHomePage) {
-        if (window.scrollY > 0) {
-          this.isLightTheme = false;
-          this.isScrolled = true;
-        } else {
-          this.isLightTheme = true;
-          this.isScrolled = false;
-        }
-      } else {
-        this.isLightTheme = false;
-        this.isScrolled = window.scrollY > 0;
-      }
-    },
-    redirectToHome() {
-      this.$router.push('/');
+const router = useRouter()
+const route = useRoute()
+
+const isLightTheme = ref(false)
+const isScrolled = ref(false)
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
+const handleScroll = () => {
+  if (isHomePage.value) {
+    if (window.scrollY > 0) {
+      isLightTheme.value = false
+      isScrolled.value = true
+    } else {
+      isLightTheme.value = true
+      isScrolled.value = false
     }
-  },
-  computed: {
-    isHomePage() {
-      return this.$route.meta.isHomePage;
-    }
+  } else {
+    isLightTheme.value = false
+    isScrolled.value = window.scrollY > 0
   }
-};
+}
+
+const redirectToHome = () => {
+  router.push('/');
+}
+
+const isHomePage = computed(() => {
+  return route.meta.isHomePage
+})
 </script>
 
 <style scoped lang="scss">

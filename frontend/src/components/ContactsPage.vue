@@ -85,8 +85,17 @@ export default {
   padding: 100px 20px 30px 20px;
 
   &__closeButton {
+    position: absolute;
     left: -5px;
     top: 87px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: 0 0;
+    width: 56px;
+    height: 56px;
+    cursor: pointer;
+    z-index: 1;
   }
 
   &__container {
@@ -211,17 +220,8 @@ export default {
     padding: 120px 100px 0 100px;
 
     &__closeButton {
-      position: absolute;
       left: 25px;
       top: 115px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: 0 0;
-      width: 56px;
-      height: 56px;
-      cursor: pointer;
-      z-index: 1;
     }
 
     &__textBlock {

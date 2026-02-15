@@ -6,19 +6,13 @@
   />
 </template>
 
-<script>
+<script setup>
 import CategoryItemSmall from "./CategoryItemSmall.vue";
 
-export default {
-  name: "CategorySmallContent",
-  components: {
-    CategoryItemSmall
-  },
-  props: {
-    categories: {
-      type: Array,
-      required: true
-    }
+defineProps({
+  categories: {
+    type: Array,
+    required: true
   }
-};
+})
 </script>

@@ -1,0 +1,36 @@
+name: Deploy to Yandex Cloud
+
+on:
+  workflow_run:
+    workflows: ["Go Tests and Build"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v5
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: SSH into the server and deploy with Docker Compose
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.YC_USER }}@${{ secrets.YC_SERVER_IP }} << 'EOF'
+            cd balloon-shop
+            git pull origin master
+            cd deploy
+            sudo docker-compose down
+            sudo docker-compose up -d --build
+          EOF
+
+      - name: Clean up Docker images (optional)
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.YC_USER }}@${{ secrets.YC_SERVER_IP }} << 'EOF'
+            sudo docker system prune -f
+          EOF

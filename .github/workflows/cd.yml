@@ -23,14 +23,10 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.YC_USER }}@${{ secrets.YC_SERVER_IP }} << 'EOF'
             cd balloon-shop
-            git pull origin master
+            git fetch origin
+            git checkout master
+            git reset --hard origin/master
             cd deploy
             sudo docker-compose down
             sudo docker-compose up -d --build
-          EOF
-
-      - name: Clean up Docker images (optional)
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.YC_USER }}@${{ secrets.YC_SERVER_IP }} << 'EOF'
-            sudo docker system prune -f
           EOF

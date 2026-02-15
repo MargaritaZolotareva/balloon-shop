@@ -35,18 +35,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import delivery_zones from '@/assets/images/delivery_zones.jpg';
-
-export default {
-  data() {
-    return {
-      delivery_zones
-    };
-  },
-}
-</script>
 <style scoped lang="scss">
 .Content {
   &__innerBlock {

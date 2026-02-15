@@ -60,20 +60,12 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { contacts } from '@/assets/js/contacts';
-export default {
-  name: 'ContactsPage',
-  methods: {
-    goBack() {
-      this.$router.back();
-    }
-  },
-  data() {
-    return {
-      contacts,
-    };
-  }
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const goBack = () => {
+  router.back()
 }
 </script>
 

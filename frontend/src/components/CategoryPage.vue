@@ -61,17 +61,6 @@ export default {
   flex-direction: column;
   padding: 100px 0 30px 0;
 
-  &__photo {
-    width: 100vw;
-    height: 100vw;
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-color: $product_cart_photo_background_color;
-    cursor: -webkit-zoom-in;
-    cursor: zoom-in;
-  }
-
   &__content {
     padding: 16px 24px 24px;
   }
@@ -140,50 +129,6 @@ export default {
     -webkit-font-smoothing: subpixel-antialiased;
     -moz-osx-font-smoothing: auto;
     font-size: 28px;
-  }
-}
-
-.ProductItem {
-  display: inline-block;
-  position: relative;
-  cursor: pointer;
-
-  &__photoWrap {
-    display: flex;
-    overflow: hidden;
-    border-radius: $elements_section_radius;
-    -webkit-mask-image: -webkit-radial-gradient($white, $black);
-    border: .5px solid $photo_border_color;
-  }
-
-  &__name {
-    color: $gray_dark;
-    font-size: 14px;
-    line-height: 18px;
-    padding-top: 12px;
-    padding-bottom: 2px;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    display: -webkit-box;
-    overflow: hidden;
-  }
-
-  &__price {
-    font-size: 15px;
-    line-height: 20px;
-    color: $dark;
-  }
-
-  &__photo {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    height: 0;
-    padding-bottom: 100%;
-    background-size: cover;
-    background-position: center;
-    background-color: $photo_background_color;
-    color: $gray;
   }
 }
 

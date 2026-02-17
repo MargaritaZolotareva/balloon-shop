@@ -75,16 +75,16 @@
             Написать
           </button>
           <div v-if="isDropdownOpen" class="Dropdown__menu" ref="dropdownMenu">
-            <a href="https://t.me/yourusername" target="_blank" rel="noopener noreferrer" class="Dropdown__item">
+            <a :href="contacts.telegram" target="_blank" rel="noopener noreferrer" class="Dropdown__item">
               Telegram
             </a>
-            <a href="https://wa.me/yourphonenumber" target="_blank" rel="noopener noreferrer" class="Dropdown__item">
+            <a :href="contacts.whatsapp" target="_blank" rel="noopener noreferrer" class="Dropdown__item">
               WhatsApp
             </a>
-            <a href="viber://chat?number=yourphonenumber" target="_blank" rel="noopener noreferrer" class="Dropdown__item">
+            <a :href="contacts.viber" target="_blank" rel="noopener noreferrer" class="Dropdown__item">
               Viber
             </a>
-            <a href="https://vk.me/podarokk.shop" target="_blank" rel="noopener noreferrer" class="Dropdown__item">
+            <a :href="contacts.vk" target="_blank" rel="noopener noreferrer" class="Dropdown__item">
               VK
             </a>
           </div>
@@ -154,6 +154,7 @@
 
 <script>
 import axios from 'axios';
+import {contacts} from "@/assets/js/contacts";
 export default {
   name: 'ProductPage',
   data() {
@@ -170,6 +171,7 @@ export default {
       similarSlideWidth: 0,
       similarVisibleCount: 3,
       isDropdownOpen: false,
+      contacts
     }
   },
   mounted() {
@@ -315,8 +317,8 @@ export default {
     background-position: center;
     background-repeat: no-repeat;
     background-color: $product_cart_photo_background_color;
-    cursor: -webkit-zoom-in;
-    cursor: zoom-in;
+    //cursor: -webkit-zoom-in;
+    //cursor: zoom-in;
   }
 
   &__content {

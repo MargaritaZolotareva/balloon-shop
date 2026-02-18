@@ -10,8 +10,8 @@
       <div class="items-wrap" v-if="categories.length > 0">
         <CategorySmallContent :categories="categories"/>
       </div>
-      <div v-else>
-        <p>Загрузка...</p>
+      <div class="loading" v-else>
+        <h2>Загрузка...</h2>
       </div>
     </div>
   </div>
@@ -20,7 +20,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import axios from 'axios';
+import api from '@/services/api'
 
 import CategorySmallContent from "@/components/CategoriesPage/CategorySmallContent.vue";
 
@@ -29,8 +29,7 @@ const router = useRouter()
 
 const fetchCategories = async () => {
   try {
-    const apiUrl = process.env.VUE_APP_API_URL
-    const response = await axios.get(`${apiUrl}/categories`)
+    const response = await api.get(`/categories`)
     categories.value = await response.data
   } catch (error) {
     console.error('Ошибка при загрузке категорий:', error)

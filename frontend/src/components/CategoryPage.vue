@@ -10,16 +10,18 @@
       <div class="items-wrap" v-if="products.length > 0">
         <ProductSmallContent :products="products"/>
       </div>
-      <div v-else>
-        <p>Загрузка...</p>
+      <div class="loading" v-else>
+        <h2>Загрузка...</h2>
       </div>
     </div>
   </div>
-  <div v-else class="loading">Загрузка...</div>
+  <div class="loading" v-else>
+    <h2>Загрузка...</h2>
+  </div>
 </template>
 
 <script>
-import axios from 'axios';
+import api from '@/services/api'
 import ProductSmallContent from "@/components/LandingPage/ProductSmallContent.vue";
 
 
@@ -39,8 +41,7 @@ export default {
   methods: {
     async fetchCategoryProducts(categoryId) {
       try {
-        const apiUrl = process.env.VUE_APP_API_URL;
-        const response = await axios.get(`${apiUrl}/categories/${categoryId}/products`);
+        const response = await api.get(`/categories/${categoryId}/products`);
         const data = await response.data;
         this.products = data.products;
         this.category_title = data.category_title;

@@ -8,8 +8,8 @@
         <ProductItemBig :product="products[0]"/>
         <ProductSmallContent :products="products.slice(1)"/>
       </div>
-      <div v-else>
-        <p>Загрузка...</p>
+      <div class="loading" v-else>
+        <h2>Загрузка...</h2>
       </div>
     </div>
     <div class="items__moreButtonWrap">
@@ -29,7 +29,7 @@
 <script>
 import ProductItemBig from "./ProductItemBig.vue";
 import ProductSmallContent from "./ProductSmallContent.vue";
-import axios from "axios";
+import api from '@/services/api'
 
 export default {
   name: "ProductsSection",
@@ -59,9 +59,8 @@ export default {
   methods: {
     async fetchProducts() {
       try {
-        const apiUrl = process.env.VUE_APP_API_URL;
         const productsCnt = 5;
-        const response = await axios.get(`${apiUrl}/categories/${this.categoryId}/products?limit=${productsCnt}`);
+        const response = await api.get(`/categories/${this.categoryId}/products?limit=${productsCnt}`);
         const data = await response.data;
         this.products = data.products;
         this.category_title = data.category_title;

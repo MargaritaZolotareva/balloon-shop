@@ -149,11 +149,13 @@
       </div>
     </div>
   </div>
-  <div v-else class="loading">Загрузка...</div>
+  <div class="loading" v-else>
+    <h2>Загрузка...</h2>
+  </div>
 </template>
 
 <script>
-import axios from 'axios';
+import api from '@/services/api'
 import {contacts} from "@/assets/js/contacts";
 export default {
   name: 'ProductPage',
@@ -193,8 +195,7 @@ export default {
   methods: {
     async fetchProduct(id) {
       try {
-        const apiUrl = process.env.VUE_APP_API_URL;
-        const response = await axios.get(`${apiUrl}/products/${id}`);
+        const response = await api.get(`/products/${id}`);
         this.product = await response.data;
       } catch (error) {
         console.error('Ошибка при получении данных о товаре:', error);

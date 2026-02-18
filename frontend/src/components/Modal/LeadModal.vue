@@ -67,7 +67,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
+import api from '@/services/api'
 
 export default {
   name: 'LeadModal',
@@ -98,7 +98,7 @@ export default {
       this.isSubmitting = true;
       try {
         const apiUrl = process.env.VUE_APP_API_URL;
-        const response = await axios.post(`${apiUrl}/lead-form`, this.formData);
+        const response = await api.post(`${apiUrl}/lead-form`, this.formData);
 
         if (response.status === 200) {
           this.$emit('form-submitted');

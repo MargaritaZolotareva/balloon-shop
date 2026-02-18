@@ -173,7 +173,9 @@
           </div>
         </div>
       </div>
-      <div v-else class="loading">Загрузка...</div>
+      <div class="loading" v-else>
+        <h1>Загрузка...</h1>
+      </div>
     </div>
   </div>
 </template>

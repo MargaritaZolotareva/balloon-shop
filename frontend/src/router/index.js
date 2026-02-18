@@ -5,6 +5,7 @@ import DeliveryPage from "@/components/DeliveryPage.vue";
 import PrivacyPage from "@/components/PrivacyPage.vue";
 import ContactsPage from "@/components/ContactsPage.vue";
 import CategoriesPage from "@/components/CategoriesPage.vue";
+import NotFound from '@/components/errors/404.vue';
 import {createRouter, createWebHistory} from "vue-router";
 
 
@@ -49,6 +50,12 @@ const routes = [
         "path": "/contacts",
         "name": "Contacts",
         "component": ContactsPage,
+        meta: { isHomePage: false },
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'not-found',
+        component: NotFound,
         meta: { isHomePage: false },
     }
 ];

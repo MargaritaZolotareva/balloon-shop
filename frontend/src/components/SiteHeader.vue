@@ -19,6 +19,7 @@
                 {'HeaderContact--light': isLightTheme,
                  'HeaderContact--dark': !isLightTheme}]"
             :href="`tel:${contacts.phone}`"
+            @click="trackPhoneClick"
         >
           <i class="far fa-phone HeaderContact__icon--phone"></i>
           <span class="Contact__name HeaderContact__name HeaderContact__name--phone">+7&nbsp;(950)&nbsp;445-48-84</span>
@@ -51,6 +52,7 @@
                  { 'HeaderContact--light': isLightTheme,
                    'HeaderContact--dark': !isLightTheme } ]"
           :href="`tel:${contacts.phone}`"
+          @click="trackPhoneClick"
       >
         <i class="far fa-phone HeaderContact__icon--phone"></i>
         <span class="Contact__name HeaderContact__name HeaderContact__name--phone">{{ contacts.phone }}</span>
@@ -101,6 +103,12 @@ const handleScroll = () => {
   } else {
     isLightTheme.value = false
     isScrolled.value = window.scrollY > 0
+  }
+}
+
+const trackPhoneClick = () => {
+  if (typeof window.ym === 'function') {
+    window.ym(90974648, 'reachGoal', 'click_phone')
   }
 }
 

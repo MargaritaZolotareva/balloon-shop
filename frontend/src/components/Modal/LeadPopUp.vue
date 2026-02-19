@@ -6,7 +6,7 @@
         <img class="LeadFormWidget__avatar" :src="logo"></div>
       <div class="LeadFormWidget__content"
            @click="$emit('open-modal')">
-        <div class="LeadFormWidget__header">Появятся вопросы — пишите! Или звоните <a :href="`tel:${contacts.phone}`">{{ contacts.phone }}</a></div>
+        <div class="LeadFormWidget__header">Появятся вопросы — пишите! Или звоните <a :href="`tel:${contacts.phone}`" @click="trackPhoneClick">{{ contacts.phone }}</a></div>
         <div class="LeadFormWidget__subheader">Ответим в ближайшее время 😉</div>
         <button class="Button Button--secondary Button--defaultSize LeadFormWidget__button">Оставить заявку</button>
       </div>
@@ -26,28 +26,26 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue';
 import logo from '@/assets/images/logo.jpg';
 import { contacts } from '@/assets/js/contacts';
 
-export default {
-  name: "LeadPopUp",
-  data() {
-    return {
-      logo,
-      isFormShown: true,
-      contacts,
-    };
-  },
-  methods: {
-    closeWidget() {
-      this.isFormShown = false;
-    },
-    openWidget() {
-      this.isFormShown = true;
-    }
-  }
+const isFormShown = ref(true);
+
+const closeWidget = () => {
+  isFormShown.value = false;
 };
+
+const openWidget = () => {
+  isFormShown.value = true;
+};
+
+const trackPhoneClick = () => {
+  if (typeof window.ym === 'function') {
+    window.ym(90974648, 'reachGoal', 'click_phone')
+  }
+}
 </script>
 
 <style scoped lang="scss">

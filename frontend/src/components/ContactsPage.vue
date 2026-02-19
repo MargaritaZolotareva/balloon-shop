@@ -21,14 +21,14 @@
           <p>ОГРНИП: {{ contacts.ogrnip }}</p>
           <p>Адрес: {{ contacts.address }}</p>
           <p>Email: <a :href="`mailto:${contacts.email}`">{{ contacts.email }}</a></p>
-          <p>Телефон: <a :href="`tel:${contacts.phone}`">{{ contacts.phone }}</a></p>
+          <p>Телефон: <a :href="`tel:${contacts.phone}`" @click="trackPhoneClick">{{ contacts.phone }}</a></p>
         </div>
         <div class="ContactsPage__block">
           <h3 class="ContactsPage__block-title">Связаться с нами</h3>
 
           <div class="ContactsPage__phone">
             <span class="ContactsPage__icon">📞</span>
-            <a :href="`tel:${contacts.phone}`">{{ contacts.phone }}</a>
+            <a :href="`tel:${contacts.phone}`" @click="trackPhoneClick">{{ contacts.phone }}</a>
           </div>
 
           <div class="ContactsPage__messengers">
@@ -66,6 +66,12 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const goBack = () => {
   router.back()
+}
+
+const trackPhoneClick = () => {
+  if (typeof window.ym === 'function') {
+    window.ym(90974648, 'reachGoal', 'click_phone')
+  }
 }
 </script>
 

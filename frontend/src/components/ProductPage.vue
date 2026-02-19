@@ -75,16 +75,20 @@
             Написать
           </button>
           <div v-if="isDropdownOpen" class="Dropdown__menu" ref="dropdownMenu">
-            <a :href="contacts.telegram" target="_blank" rel="noopener noreferrer" class="Dropdown__item">
+            <a :href="contacts.telegram" target="_blank" rel="noopener noreferrer" class="Dropdown__item"
+               @click="trackSocialClick('telegram')">
               Telegram
             </a>
-            <a :href="contacts.whatsapp" target="_blank" rel="noopener noreferrer" class="Dropdown__item">
+            <a :href="contacts.whatsapp" target="_blank" rel="noopener noreferrer" class="Dropdown__item"
+               @click="trackSocialClick('whatsapp')">
               WhatsApp
             </a>
-            <a :href="contacts.viber" target="_blank" rel="noopener noreferrer" class="Dropdown__item">
+            <a :href="contacts.viber" target="_blank" rel="noopener noreferrer" class="Dropdown__item"
+               @click="trackSocialClick('viber')">
               Viber
             </a>
-            <a :href="contacts.vk" target="_blank" rel="noopener noreferrer" class="Dropdown__item">
+            <a :href="contacts.vk" target="_blank" rel="noopener noreferrer" class="Dropdown__item"
+               @click="trackSocialClick('vk')">
               VK
             </a>
           </div>
@@ -154,151 +158,169 @@
   </div>
 </template>
 
-<script>
-import api from '@/services/api'
-import {contacts} from "@/assets/js/contacts";
-export default {
-  name: 'ProductPage',
-  data() {
-    return {
-      product: null,
-      isLoading: false,
-      activeSlide: 0,
-      translateX: 0,
-      slideWidth: 0,
-      startX: 0,
-      endX: 0,
-      similarActiveSlide: 0,
-      similarTranslateX: 0,
-      similarSlideWidth: 0,
-      similarVisibleCount: 3,
-      isDropdownOpen: false,
-      contacts
-    }
-  },
-  mounted() {
-    const productId = this.$route.params.id;
-    this.fetchProduct(productId).then(() => {
-      this.$nextTick(() => {
-        this.calculateSlideWidth();
-        this.calculateSimilarSlideWidth();
-      });
-    });
-    window.addEventListener('resize', this.calculateSlideWidth);
-    window.addEventListener('resize', this.calculateSimilarSlideWidth);
-    document.addEventListener('click', this.handleClickOutside);
-  },
-  beforeRouteUpdate(to, from, next) {
-    this.fetchProduct(to.params.id);
-    next();
-  },
-  methods: {
-    async fetchProduct(id) {
-      try {
-        const response = await api.get(`/products/${id}`);
-        this.product = await response.data;
-      } catch (error) {
-        console.error('Ошибка при получении данных о товаре:', error);
-      }
-    },
-    setActiveSlide(index) {
-      this.activeSlide = index;
-      this.translateX = -this.activeSlide * this.slideWidth;
-    },
-    moveSlide(direction) {
-      let newIndex = this.activeSlide + direction;
-      if (newIndex < 0) {
-        newIndex = this.product.photos.length - 1;
-      } else if (newIndex >= this.product.photos.length) {
-        newIndex = 0;
-      }
-      this.setActiveSlide(newIndex);
-    },
-    handleTouchStart(event) {
-      this.startX = event.touches[0].clientX;
-    },
-    handleTouchMove(event) {
-      this.endX = event.touches[0].clientX;
-    },
-    handleTouchEnd() {
-      const swipeDistance = this.startX - this.endX;
+<script setup>
+import { ref, onMounted, watch, computed, nextTick } from 'vue';
+import api from '@/services/api';
+import { useRoute, useRouter } from 'vue-router';
+import { contacts } from '@/assets/js/contacts';
 
-      if (Math.abs(swipeDistance) > 50) {
-        if (swipeDistance > 0) {
-          this.moveSlide(1);
-        } else {
-          this.moveSlide(-1);
-        }
-      }
-    },
-    handleTouchEndSimilar() {
-      const swipeDistance = this.startX - this.endX;
+const product = ref(null);
+const activeSlide = ref(0);
+const translateX = ref(0);
+const slideWidth = ref(0);
+const startX = ref(0);
+const endX = ref(0);
+const similarActiveSlide = ref(0);
+const similarTranslateX = ref(0);
+const similarSlideWidth = ref(0);
+const similarVisibleCount = ref(2);
+const isDropdownOpen = ref(false);
 
-      if (Math.abs(swipeDistance) > 20) {
-        if (swipeDistance > 0) {
-          this.moveSimilarSlide(1);
-        } else {
-          this.moveSimilarSlide(-1);
-        }
-      }
-    },
-    calculateSlideWidth() {
-      const slidesContainer = this.$refs.slidesContainer;
-      const slide = slidesContainer ? slidesContainer.children[0] : null;
-      if (slide) {
-        this.slideWidth = slide.clientWidth;
-        this.translateX = -this.activeSlide * this.slideWidth;
-      }
-    },
-    calculateSimilarSlideWidth() {
-      const container = this.$refs.similarSlidesContainer;
-      const slide = container ? container.children[0] : null;
+const dropdownMenu = ref(null);
+const slidesContainer = ref(null);
+const similarSlidesContainer = ref(null);
 
-      if (slide) {
-        this.similarSlideWidth = slide.clientWidth;
-      }
-    },
-    moveSimilarSlide(direction) {
-      const maxIndex =
-          this.product.similarProducts.length - 2;
+const route = useRoute();
+const router = useRouter();
 
-      let newIndex = this.similarActiveSlide + direction;
-
-      if (newIndex < 0) {
-        newIndex = 0;
-      }
-
-      if (newIndex > maxIndex) {
-        newIndex = maxIndex;
-      }
-
-      this.similarActiveSlide = newIndex;
-      this.similarTranslateX = -this.similarActiveSlide * this.similarSlideWidth;
-    },
-    getImageUrl(photoPath) {
-      const apiHost = process.env.VUE_APP_API_URL;
-      return `${apiHost}/${photoPath}`;
-    },
-    goBack() {
-      this.$router.back();
-    },
-    toggleDropdown() {
-      this.isDropdownOpen = !this.isDropdownOpen;
-    },
-    handleClickOutside(event) {
-      const dropdown = this.$refs.dropdownMenu;
-
-      if (this.isDropdownOpen && dropdown && !dropdown.contains(event.target) && !event.target.closest('.Dropdown__toggle')) {
-        this.isDropdownOpen = false;
-      }
-    },
-  },
-  computed: {
-    formattedDescription() {
-      return this.product.description.replace(/\n/g, '<br>');
-    },
-  },
+const fetchProduct = async (id) => {
+  try {
+    const response = await api.get(`/products/${id}`);
+    product.value = await response.data;
+  } catch (error) {
+    console.error('Ошибка при получении данных о товаре:', error);
+  }
 };
+
+onMounted(() => {
+  const productId = route.params.id;
+  fetchProduct(productId).then(() => {
+    nextTick(() => {
+      calculateSlideWidth();
+      calculateSimilarSlideWidth();
+    });
+  });
+
+  window.addEventListener('resize', calculateSlideWidth);
+  window.addEventListener('resize', calculateSimilarSlideWidth);
+  document.addEventListener('click', handleClickOutside);
+});
+
+watch(route, (to) => {
+  fetchProduct(to.params.id);
+});
+
+const calculateSlideWidth = () => {
+  const container = slidesContainer.value;
+  if (!container || !container.children.length) return;
+  const slide = container.children[0];
+  if (slide) {
+    slideWidth.value = slide.clientWidth;
+    translateX.value = -activeSlide.value * slideWidth.value;
+  }
+};
+
+const calculateSimilarSlideWidth = () => {
+  const container = similarSlidesContainer.value;
+  if (!container || !container.children.length) return;
+  const slide = container.children[0];
+  if (slide) {
+    similarSlideWidth.value = slide.clientWidth;
+  }
+};
+
+const setActiveSlide = (index) => {
+  activeSlide.value = index;
+  translateX.value = -activeSlide.value * slideWidth.value;
+};
+
+const moveSlide = (direction) => {
+  if (!product.value) return;
+  let newIndex = activeSlide.value + direction;
+  if (newIndex < 0) {
+    newIndex = product.value.photos.length - 1;
+  } else if (newIndex >= product.value.photos.length) {
+    newIndex = 0;
+  }
+  setActiveSlide(newIndex);
+};
+
+const handleTouchStart = (event) => {
+  startX.value = event.touches[0].clientX;
+};
+
+const handleTouchMove = (event) => {
+  endX.value = event.touches[0].clientX;
+};
+
+const handleTouchEnd = () => {
+  const swipeDistance = startX.value - endX.value;
+  if (Math.abs(swipeDistance) > 50) {
+    if (swipeDistance > 0) {
+      moveSlide(1);
+    } else {
+      moveSlide(-1);
+    }
+  }
+};
+
+const handleTouchEndSimilar = () => {
+  const swipeDistance = startX.value - endX.value;
+  if (Math.abs(swipeDistance) > 20) {
+    if (swipeDistance > 0) {
+      moveSimilarSlide(1);
+    } else {
+      moveSimilarSlide(-1);
+    }
+  }
+};
+
+const moveSimilarSlide = (direction) => {
+  if (!product.value) return;
+  const maxIndex = product.value.similarProducts.length - similarVisibleCount.value;
+  let newIndex = similarActiveSlide.value + direction * similarVisibleCount.value;
+  if (newIndex < 0) {
+    newIndex = 0;
+  }
+  if (newIndex > maxIndex) {
+    newIndex = maxIndex;
+  }
+  similarActiveSlide.value = newIndex;
+  similarTranslateX.value = -similarActiveSlide.value * similarSlideWidth.value;
+};
+
+const getImageUrl = (photoPath) => {
+  const apiHost = process.env.VUE_APP_API_URL;
+  return `${apiHost}/${photoPath}`;
+};
+
+const goBack = () => {
+  router.back();
+};
+
+const toggleDropdown = () => {
+  isDropdownOpen.value = !isDropdownOpen.value;
+};
+
+const handleClickOutside = (event) => {
+  if (!isDropdownOpen.value || !dropdownMenu.value) return;
+  if (!dropdownMenu.value.contains(event.target) && !event.target.closest('.Dropdown__toggle')) {
+    isDropdownOpen.value = false;
+  }
+};
+
+const formattedDescription = computed(() => {
+  if (!product.value) return;
+  return product.value?.description?.replace(/\n/g, '<br>') || '';
+});
+
+const trackSocialClick = (socialNetwork) => {
+  if (typeof window.ym === 'function') {
+    window.ym(90974648, 'reachGoal', 'click_social', {
+      socialNetwork,
+    });
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -530,6 +552,7 @@ export default {
       width: 560px;
       height: auto;
       min-height: 100%;
+      min-width: 560px;
     }
 
     &__content {
@@ -600,7 +623,7 @@ export default {
       }
 
       &--right {
-        right: 13px;
+        right: 77px;
       }
     }
 

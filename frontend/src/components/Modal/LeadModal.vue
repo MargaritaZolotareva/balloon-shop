@@ -101,6 +101,9 @@ export default {
         const response = await api.post(`${apiUrl}/lead-form`, this.formData);
 
         if (response.status === 200) {
+          if (typeof window.ym === 'function') {
+            window.ym(90974648, 'reachGoal', 'submit_form')
+          }
           this.$emit('form-submitted');
         }
       } catch (error) {

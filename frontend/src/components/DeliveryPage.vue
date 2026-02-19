@@ -46,7 +46,7 @@
           </li>
         </ul>
 
-        <p>Остались вопросы? Можно связаться с нами по телефону <a :href="`tel:${contacts.phone}`">{{ contacts.phone }}</a>, написать в
+        <p>Остались вопросы? Можно связаться с нами по телефону <a :href="`tel:${contacts.phone}`" @click="trackPhoneClick">{{ contacts.phone }}</a>, написать в
           мессенджерах (<a href="https://t.me/podarokk_shop">Telegram</a>, <a
               :href="contacts.whatsapp">WhatsApp</a>, <a :href="contacts.viber">Viber</a>, <a
               :href="contacts.vk">VK</a>) или оставить заявку на сайте.</p>
@@ -67,6 +67,12 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const goBack = () => {
   router.back()
+}
+
+const trackPhoneClick = () => {
+  if (typeof window.ym === 'function') {
+    window.ym(90974648, 'reachGoal', 'click_phone')
+  }
 }
 </script>
 

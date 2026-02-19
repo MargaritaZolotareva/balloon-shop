@@ -295,7 +295,11 @@ const getImageUrl = (photoPath) => {
 };
 
 const goBack = () => {
-  router.back();
+  if (window.history.length > 1) {
+    router.back();
+  } else {
+    router.push('/');
+  }
 };
 
 const toggleDropdown = () => {

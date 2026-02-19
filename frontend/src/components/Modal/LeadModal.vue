@@ -21,7 +21,7 @@
                 <div class="FormLayoutGroup__content">
                   <input type="tel" placeholder=" " autocomplete="tel" class="Input"
                                                              value="" v-model="formData.phone">
-                  <div v-if="errors.phone" class="error">{{ errors.phone }}</div>
+                  <div v-if="errors.phone" class="form-error">{{ errors.phone }}</div>
                 </div>
               </label>
               <label class="FormLayoutGroup">
@@ -30,7 +30,7 @@
                 <div class="FormLayoutGroup__content">
                   <input type="text" placeholder=" " autocomplete="given-name"
                                                              class="Input" value="" v-model="formData.name">
-                  <div v-if="errors.name" class="error">{{ errors.name }}</div>
+                  <div v-if="errors.name" class="form-error">{{ errors.name }}</div>
                 </div>
               </label>
               <label class="FormLayoutGroup">
@@ -38,7 +38,7 @@
                 <div class="FormLayoutGroup__content">
                   <textarea placeholder=" " class="Textarea"
                                                                 v-model="formData.message"></textarea>
-                  <div v-if="errors.message" class="error">{{ errors.message }}</div>
+                  <div v-if="errors.message" class="form-error">{{ errors.message }}</div>
                 </div>
               </label>
               <label class="CheckBox CheckBox--default LeadForm__agreeCheckBox">
@@ -50,7 +50,7 @@
                 <!--                    TODO: добавить ссылку на политику конфиденциальности-->
                 <span>Отправляя форму, вы соглашаетесь с <a href="privacy" target="_blank" rel="noopener noreferrer"
                                                             class="Link Link--default">политикой конфиденциальности</a></span>
-                <div v-if="errors.isChecked" class="error">{{ errors.isChecked }}</div>
+                <div v-if="errors.isChecked" class="form-error">{{ errors.isChecked }}</div>
               </label>
               <button type="submit" :disabled="!formData.isChecked" class="SectionButton">
                 <div class="SectionButton__border">
@@ -97,8 +97,7 @@ export default {
 
       this.isSubmitting = true;
       try {
-        const apiUrl = process.env.VUE_APP_API_URL;
-        const response = await api.post(`${apiUrl}/lead-form`, this.formData);
+        const response = await api.post(`/lead-form`, this.formData);
 
         if (response.status === 200) {
           if (typeof window.ym === 'function') {
@@ -136,10 +135,11 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-.error {
+.form-error {
   color: red;
   font-size: 0.85rem;
   margin-top: 4px;
+  line-height: 25px;
 }
 .LeadForm {
   padding: 80px 24px;

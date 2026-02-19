@@ -15,7 +15,7 @@
 
       <div class="ContactsPage__blocks">
         <div class="ContactsPage__block">
-          <h2>Реквизиты организации</h2>
+          <h3>Реквизиты организации</h3>
           <p>ИП Золотарёва Е.Ю.</p>
           <p>ИНН: {{ contacts.inn }}</p>
           <p>ОГРНИП: {{ contacts.ogrnip }}</p>
@@ -65,7 +65,11 @@ import { contacts } from '@/assets/js/contacts';
 import { useRouter } from 'vue-router'
 const router = useRouter()
 const goBack = () => {
-  router.back()
+  if (window.history.length > 1) {
+    router.back();
+  } else {
+    router.push('/');
+  }
 }
 
 const trackPhoneClick = () => {
@@ -211,6 +215,17 @@ const trackPhoneClick = () => {
   &__icon {
     line-height: 1;
   }
+
+  h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
+    font-weight: bold;
+  }
+
+  p {
+    font-size: 16px;
+    line-height: 1.5;
+  }
 }
 
 @media (min-width: 1000px) {
@@ -220,10 +235,6 @@ const trackPhoneClick = () => {
     &__closeButton {
       left: 25px;
       top: 115px;
-    }
-
-    &__textBlock {
-      margin-bottom: 32px;
     }
   }
 }

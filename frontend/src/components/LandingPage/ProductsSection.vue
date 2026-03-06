@@ -44,10 +44,6 @@ export default {
     };
   },
   props: {
-    section: {
-      type: Object,
-      required: true
-    },
     categoryId: {
       type: Number,
       required: true

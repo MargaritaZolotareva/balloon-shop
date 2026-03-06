@@ -1,14 +1,8 @@
 <template>
   <TopSection/>
   <AdvantagesMobile/>
-  <ProductsSection :categoryId="48" :section="section"/>
-  <ProductsSection :categoryId="49" :section="section"/>
-  <ProductsSection :categoryId="51" :section="section"/>
-  <ProductsSection :categoryId="45" :section="section"/>
-  <ProductsSection :categoryId="46" :section="section"/>
-  <ProductsSection :categoryId="50" :section="section"/>
-  <ProductsSection :categoryId="44" :section="section"/>
-  <ProductsSection :categoryId="47" :section="section"/>
+  <LazySection v-for="cat in categories" :key="cat.id" :categoryId="cat.id" />
+
   <ContentSection/>
 <!--  <PhotosSection/>-->
 <!--  <ReviewsSection/>-->
@@ -17,8 +11,8 @@
 <script>
 import AdvantagesMobile from './LandingPage/AdvantagesMobile.vue';
 import TopSection from './LandingPage/TopSection.vue';
-import ProductsSection from './LandingPage/ProductsSection.vue';
 import ContentSection from './LandingPage/ContentSection.vue';
+import LazySection from './LandingPage/LazySection.vue';
 // import PhotosSection from './LandingPage/PhotosSection.vue';
 // import ReviewsSection from './LandingPage/ReviewsSection.vue';
 
@@ -27,16 +21,17 @@ export default {
   components: {
     AdvantagesMobile,
     TopSection,
-    ProductsSection,
     ContentSection,
+    LazySection
     // PhotosSection,
     // ReviewsSection,
   },
   data() {
     return {
-      section: {
-        title: 'Шары на выписку'
-      },
+      categories: [
+        { id: 48 }, { id: 49 }, { id: 51 }, { id: 45 },
+        { id: 46 }, { id: 50 }, { id: 44 }, { id: 47 },
+      ]
     };
   },
 }

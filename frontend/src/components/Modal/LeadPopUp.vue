@@ -25,7 +25,7 @@
     <div class="LeadFormWidget__minimizedBanner"
          :class="{ 'LeadFormWidget__minimizedBanner--shown': !isFormShown }" @click="openWidget">
       <div class="LeadFormWidget__avatarWrap">
-        <img class="LeadFormWidget__avatar" :src="logo">
+        <img class="LeadFormWidget__avatar" :src="logo" loading="lazy">
         <div class="LeadFormWidget__chatIcon">
           <svg
               viewBox="0 0 512 512"

@@ -13,7 +13,6 @@ import LeadPopUp from './components/Modal/LeadPopUp.vue';
 import LeadModal from './components/Modal/LeadModal.vue';
 import LeadModalSent from './components/Modal/LeadModalSent.vue';
 import Footer from "@/components/SiteFooter.vue";
-import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export default {
   name: 'App',
@@ -70,8 +69,5 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li {
 }
 footer {
   margin-top: auto;
-}
-.far, .far:before {
-  font-family: 'FontAwesome', sans-serif;
 }
 </style>

@@ -1,7 +1,15 @@
 <template>
   <div v-if="category_title" class="CategoryPage">
     <button class="Button Button--rounded Button--defaultSize CategoryPage__closeButton" @click="goBack">
-      <i class="far fa-arrow-left CloseButtonIcon"></i>
+      <svg
+          class="CloseButtonIcon"
+          viewBox="0 0 512 512"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="currentColor">
+        <path fill="currentColor" d="M73.4 297.4C60.9 309.9 60.9 330.2 73.4 342.7L233.4 502.7C245.9 515.2 266.2 515.2 278.7 502.7C291.2 490.2 291.2 469.9 278.7 457.4L173.3 352L544 352C561.7 352 576 337.7 576 320C576 302.3 561.7 288 544 288L173.3 288L278.7 182.6C291.2 170.1 291.2 149.8 278.7 137.3C266.2 124.8 245.9 124.8 233.4 137.3L73.4 297.3z"></path>
+      </svg>
     </button>
     <h2 class="Block__title Block__title--default">
       <div class="Block__titleWrap">{{ category_title }}</div>

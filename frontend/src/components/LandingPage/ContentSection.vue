@@ -27,14 +27,34 @@
             </div>
           </div>
         </div>
-        <div class="Content__attachments">
-          <iframe src="https://www.google.com/maps/d/embed?mid=1l-B1xdWuZ1hSwNoD-tlMAFD7vCtgJeRL&hl=ru&ehbc=2E312F"
+        <div class="Content__attachments" ref="mapContainer">
+          <iframe v-if="showMap"
+                  src="https://www.google.com/maps/d/embed?mid=1l-B1xdWuZ1hSwNoD-tlMAFD7vCtgJeRL&hl=ru&ehbc=2E312F"
                   width="100%" height="480" loading="lazy"></iframe>
         </div>
       </div>
     </div>
   </div>
 </template>
+<script setup>
+import { ref, onMounted } from 'vue'
+
+const showMap = ref(false)
+const mapContainer = ref(null)
+
+onMounted(() => {
+  const observer = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      showMap.value = true
+      observer.disconnect()
+    }
+  })
+
+  if (mapContainer.value) {
+    observer.observe(mapContainer.value)
+  }
+})
+</script>
 <style scoped lang="scss">
 .Content {
   &__innerBlock {

@@ -141,7 +141,7 @@
                     @click="moveSimilarSlide(-1)">
                   <svg aria-hidden="true" display="block"
                        class="ProductCart__similarProdSliderNavButtonIcon--left SlideButton__icon SlideButton__icon--left"
-                       width="28" height="28" viewBox="0 0 28 28" fill="none" style="width: 28px; height: 28px;">
+                       width="28" height="28" viewBox="0 0 28 28" fill="none">
                     <path fill="currentColor"
                           d="m12.414 14 5.793-5.793a1 1 0 0 0-1.414-1.414l-6.5 6.5a1 1 0 0 0 0 1.414l6.5 6.5a1 1 0 0 0 1.414-1.414z"></path>
                   </svg>
@@ -158,7 +158,7 @@
                     @click="moveSimilarSlide(1)">
                   <svg aria-hidden="true" display="block"
                        class="ProductCart__similarProdSliderNavButtonIcon--right SlideButton__icon SlideButton__icon--right"
-                       width="28" height="28" viewBox="0 0 28 28" style="width: 28px; height: 28px;">
+                       width="28" height="28" viewBox="0 0 28 28">
                     <g fill="none" fill-rule="evenodd">
                       <path d="M0 0h28v28H0z"></path>
                       <path stroke="#8bc1ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

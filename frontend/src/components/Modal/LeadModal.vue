@@ -3,7 +3,15 @@
     <div class="Modal__backdrop" @click="close"></div>
     <div class="Modal__content">
       <button class="Button Button--rounded Button--defaultSize Modal__closeButton" @click="close">
-        <i class="far fa-xmark Modal__closeButton"></i>
+        <svg
+            class="Modal__closeButton"
+            viewBox="0 0 512 512"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="currentColor">
+          <path fill="currentColor" d="M183.1 137.4C170.6 124.9 150.3 124.9 137.8 137.4C125.3 149.9 125.3 170.2 137.8 182.7L275.2 320L137.9 457.4C125.4 469.9 125.4 490.2 137.9 502.7C150.4 515.2 170.7 515.2 183.2 502.7L320.5 365.3L457.9 502.6C470.4 515.1 490.7 515.1 503.2 502.6C515.7 490.1 515.7 469.8 503.2 457.3L365.8 320L503.1 182.6C515.6 170.1 515.6 149.8 503.1 137.3C490.6 124.8 470.3 124.8 457.8 137.3L320.5 274.7L183.1 137.4z"></path>
+        </svg>
       </button>
       <div class="LeadFormModal__leadFormWrap">
         <div class="Block LeadForm LeadFormModal__leadForm">
@@ -45,7 +53,16 @@
                 <input class="CheckBox__input" type="checkbox"
                        v-model="formData.isChecked">
                 <div class="CheckBox__indicator" aria-hidden="true">
-                  <i v-if="formData.isChecked" class="far fa-square-check CheckBox__indicatorIcon"></i>
+                  <svg
+                      v-if="formData.isChecked"
+                      class="CheckBox__indicatorIcon"
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="currentColor">
+                    <path fill="currentColor" d="M480 96C515.3 96 544 124.7 544 160L544 480C544 515.3 515.3 544 480 544L160 544C124.7 544 96 515.3 96 480L96 160C96 124.7 124.7 96 160 96L480 96zM160 144C151.2 144 144 151.2 144 160L144 480C144 488.8 151.2 496 160 496L480 496C488.8 496 496 488.8 496 480L496 160C496 151.2 488.8 144 480 144L160 144zM390.7 233.9C398.5 223.2 413.5 220.8 424.2 228.6C434.9 236.4 437.3 251.4 429.5 262.1L307.4 430.1C303.3 435.8 296.9 439.4 289.9 439.9C282.9 440.4 276 437.9 271.1 433L215.2 377.1C205.8 367.7 205.8 352.5 215.2 343.2C224.6 333.9 239.8 333.8 249.1 343.2L285.1 379.2L390.7 234z"></path>
+                  </svg>
                 </div>
                 <!--                    TODO: добавить ссылку на политику конфиденциальности-->
                 <span>Отправляя форму, вы соглашаетесь с <a href="privacy" target="_blank" rel="noopener noreferrer"

@@ -1,5 +1,5 @@
 <template>
-  <div class="Top Top--withAdvantages" style="height: 667px;">
+  <div class="Top Top--withAdvantages">
     <span class="Top__anchor" id="top" aria-hidden="true"></span>
     <div class="Top__background"
          style="background-image: linear-gradient(74.15deg, rgb(130, 204, 245) -7.5%, rgb(119, 202, 172) 49.69%, rgb(250, 217, 103) 105.7%);"></div>
@@ -17,20 +17,38 @@
       </div>
     </div>
     <div class="Top__callToScrollLabel" @click="scrollToNextSection">
-      <i class="far fa-angle-down" style="font-size: 24px;"></i>
+      <svg
+          viewBox="0 0 512 512"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="currentColor">
+        <path fill="currentColor" d="M297.4 438.6C309.9 451.1 330.2 451.1 342.7 438.6L502.7 278.6C515.2 266.1 515.2 245.8 502.7 233.3C490.2 220.8 469.9 220.8 457.4 233.3L320 370.7L182.6 233.4C170.1 220.9 149.8 220.9 137.3 233.4C124.8 245.9 124.8 266.2 137.3 278.7L297.3 438.7z"></path>
+      </svg>
       <span class="Top__callToScrollLabelIconText">Подробнее</span>
     </div>
-    <AdvantagesDesktop/>
+    <AdvantagesDesktop v-if="showAdvantages"/>
   </div>
 </template>
-
 <script>
-import AdvantagesDesktop from './AdvantagesDesktop.vue'
+import {defineAsyncComponent} from "vue";
 
 export default {
   name: 'TopContent',
   components: {
-    AdvantagesDesktop
+    AdvantagesDesktop: defineAsyncComponent(() =>
+        import('./AdvantagesDesktop.vue')
+    )
+  },
+  data() {
+    return {
+      showAdvantages: false
+    }
+  },
+  mounted() {
+    requestAnimationFrame(() => {
+      this.showAdvantages = true
+    })
   },
   props: {
     title: {
@@ -194,6 +212,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li {
 
     &--withAdvantages {
       min-height: 764px;
+      height: 100vh;
       justify-content: space-between;
 
       .Top__content {

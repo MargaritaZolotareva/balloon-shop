@@ -7,50 +7,35 @@
   <Footer />
 </template>
 
-<script>
+<script setup>
 import Header from './components/SiteHeader.vue';
 import LeadPopUp from './components/Modal/LeadPopUp.vue';
 import LeadModal from './components/Modal/LeadModal.vue';
 import LeadModalSent from './components/Modal/LeadModalSent.vue';
 import Footer from "@/components/SiteFooter.vue";
+import { ref, provide } from 'vue';
 
-export default {
-  name: 'App',
-  components: {
-    Footer,
-    Header,
-    LeadPopUp,
-    LeadModal,
-    LeadModalSent
-  },
-  data() {
-    return {
-      isModalShown: false,
-      isLeadModalSentShown: false,
-      isProductModalShown: false
-    };
-  },
-  methods: {
-    openLeadModal() {
-      this.isModalShown = true;
-    },
-    closeLeadModal() {
-      this.isModalShown = false;
-    },
-    showSuccessModal() {
-      this.isModalShown = false;
-      this.isLeadModalSentShown = true;
-    },
-    closeLeadSentModal() {
-      this.isLeadModalSentShown = false;
-    },
-  },
-  provide() {
-    return {
-      openLeadModal: this.openLeadModal
-    };
-  },
+const isModalShown = ref(false);
+const isLeadModalSentShown = ref(false);
+
+function openLeadModal() {
+  isModalShown.value = true;
 }
+
+function closeLeadModal() {
+  isModalShown.value = false;
+}
+
+function showSuccessModal() {
+  isModalShown.value = false;
+  isLeadModalSentShown.value = true;
+}
+
+function closeLeadSentModal() {
+  isLeadModalSentShown.value = false;
+}
+
+provide('openLeadModal', openLeadModal);
 </script>
 
 <style>

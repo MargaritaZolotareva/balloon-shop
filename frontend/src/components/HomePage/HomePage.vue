@@ -9,17 +9,17 @@
 </template>
 
 <script>
-import TopSection from './LandingPage/TopSection.vue';
-import ContentSection from './LandingPage/ContentSection.vue';
-import LazySection from './LandingPage/LazySection.vue';
+import TopSection from './TopSection.vue';
+import ContentSection from './ContentSection.vue';
+import LazySection from './LazySection.vue';
 import {defineAsyncComponent} from "vue";
-// import PhotosSection from './LandingPage/PhotosSection.vue';
-// import ReviewsSection from './LandingPage/ReviewsSection.vue';
+// import PhotosSection from './PhotosSection.vue';
+// import ReviewsSection from './ReviewsSection.vue';
 
 export default {
   name: 'App',
   components: {
-    AdvantagesMobile: defineAsyncComponent(() => import('./LandingPage/AdvantagesMobile.vue')),
+    AdvantagesMobile: defineAsyncComponent(() => import('./AdvantagesMobile.vue')),
     TopSection,
     ContentSection,
     LazySection

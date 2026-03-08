@@ -28,40 +28,35 @@
   </div>
 </template>
 
-<script>
-import api from '@/services/api'
-import ProductSmallContent from "@/components/LandingPage/ProductSmallContent.vue";
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import api from '@/services/api';
+import ProductSmallContent from "@/components/ProductPage/ProductSmallContent.vue";
 
+const category_title = ref('');
+const products = ref([]);
 
-export default {
-  name: 'CategoryPage',
-  components: {ProductSmallContent},
-  data() {
-    return {
-      category_title: "",
-      products: []
-    }
-  },
-  mounted() {
-    const categoryId = this.$route.params.id;
-    this.fetchCategoryProducts(categoryId)
-  },
-  methods: {
-    async fetchCategoryProducts(categoryId) {
-      try {
-        const response = await api.get(`/categories/${categoryId}/products`);
-        const data = await response.data;
-        this.products = data.products;
-        this.category_title = data.category_title;
-      } catch (error) {
-        console.error("Ошибка при загрузке товаров категории:", error);
-      }
-    },
-    goBack() {
-      this.$router.back();
-    },
-  },
+const route = useRoute();
+const router = useRouter();
+
+const fetchCategoryProducts = async (categoryId) => {
+  try {
+    const response = await api.get(`/categories/${categoryId}/products`);
+    const data = await response.data;
+    products.value = data.products;
+    category_title.value = data.category_title;
+  } catch (error) {
+    console.error("Ошибка при загрузке товаров категории:", error);
+  }
 };
+const goBack = () => {
+  router.back();
+};
+onMounted(() => {
+  const categoryId = route.params.id;
+  fetchCategoryProducts(categoryId);
+});
 </script>
 
 <style scoped lang="scss">

@@ -8,11 +8,11 @@
 </template>
 
 <script setup>
-import Header from './components/SiteHeader.vue';
+import Header from './components/Common/SiteHeader.vue';
 import LeadPopUp from './components/Modal/LeadPopUp.vue';
 import LeadModal from './components/Modal/LeadModal.vue';
 import LeadModalSent from './components/Modal/LeadModalSent.vue';
-import Footer from "@/components/SiteFooter.vue";
+import Footer from "@/components/Common/SiteFooter.vue";
 import { ref, provide } from 'vue';
 
 const isModalShown = ref(false);

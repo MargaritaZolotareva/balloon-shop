@@ -1,11 +1,11 @@
-import HomePage from "@/components/HomePage.vue";
-import ProductPage from "@/components/ProductPage.vue";
-import CategoryPage from "@/components/CategoryPage.vue";
-import DeliveryPage from "@/components/DeliveryPage.vue";
-import PrivacyPage from "@/components/PrivacyPage.vue";
-import ContactsPage from "@/components/ContactsPage.vue";
-import CategoriesPage from "@/components/CategoriesPage.vue";
-import NotFound from '@/components/errors/404.vue';
+import HomePage from "@/components/HomePage/HomePage.vue";
+import ProductPage from "@/components/ProductPage/ProductPage.vue";
+import CategoryPage from "@/components/CategoriesPage/CategoryPage.vue";
+import DeliveryPage from "@/components/Common/DeliveryPage.vue";
+import PrivacyPage from "@/components/Common/PrivacyPage.vue";
+import ContactsPage from "@/components/Common/ContactsPage.vue";
+import CategoriesPage from "@/components/CategoriesPage/CategoriesPage.vue";
+import NotFound from '@/components/Errors/404.vue';
 import {createRouter, createWebHistory} from "vue-router";
 
 

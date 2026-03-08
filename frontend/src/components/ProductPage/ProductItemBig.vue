@@ -1,6 +1,6 @@
 <template>
-  <div class="product-item">
-    <router-link :to="`/products/${product.id}`" div class="img-wrap">
+  <div class="product-item product-item--big">
+    <router-link :to="`/products/${product.id}`" class="img-wrap">
       <div :data-src="getImageUrl(product.photo)" class="product-item__img"
            :style="{ backgroundImage: `url(${getImageUrl(product.photo)})` }">
         <img :src="getImageUrl(product.photo)" :alt="product.title" class="visually-hidden" />
@@ -15,23 +15,37 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "ProductItemSmall",
-  props: {
-    product: Object
-  },
-  methods: {
-    getImageUrl(photoPath) {
-      const apiHost = process.env.VUE_APP_API_URL;
-      return `${apiHost}/${photoPath}`;
-    }
+<script setup>
+defineProps({
+  product: {
+    type: Object,
+    required: true
   }
-};
+})
+
+const getImageUrl = (photoPath) => {
+  const apiHost = process.env.VUE_APP_API_URL
+  return `${apiHost}/${photoPath}`
+}
 </script>
 
 <style scoped lang="scss">
 .product-item {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+
+  &--big {
+    grid-column-start: auto;
+    grid-column-end: auto;
+    grid-row-start: auto;
+    grid-row-end: auto;
+
+    .product-item__img {
+      padding-bottom: 100%;
+    }
+  }
+
   .img-wrap {
     display: flex;
     overflow: hidden;
@@ -74,59 +88,20 @@ export default {
     line-height: 20px;
     color: $dark;
   }
+}
 
-  .hover-content {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    left: 15px;
-    bottom: 15px;
-    text-align: center;
-    background-color: rgba(42, 42, 42, .97);
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.5s;
+@media (min-width: 1000px) {
+  .product-item {
+    &--big {
+      grid-column-start: 1;
+      grid-column-end: 3;
+      grid-row-start: 1;
+      grid-row-end: 3;
 
-    .inner {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 100%;
-    }
-
-    h4 {
-      color: #fff;
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 15px;
-    }
-
-    p {
-      color: #fff;
-      padding: 0px 20px;
-      margin-bottom: 20px;
-    }
-
-    .main-border-button a {
-      color: #fff;
-      text-decoration: none;
-      border: 2px solid #fff;
-      padding: 10px 20px;
-      font-weight: 600;
-      border-radius: 30px;
-      transition: background-color 0.3s ease;
-
-      &:hover {
-        background-color: #fff;
-        color: #333;
+      .product-item__img {
+        padding-bottom: 108%;
       }
     }
-  }
-
-  &:hover .hover-content {
-    opacity: 1;
-    visibility: visible;
   }
 }
 </style>

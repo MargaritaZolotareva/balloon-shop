@@ -6,19 +6,13 @@
   />
 </template>
 
-<script>
+<script setup>
 import ProductItemSmall from "./ProductItemSmall.vue";
 
-export default {
-  name: "ProductSmallContent",
-  components: {
-    ProductItemSmall
-  },
-  props: {
-    products: {
-      type: Array,
-      required: true
-    }
+defineProps({
+  products: {
+    type: Array,
+    required: true
   }
-};
+})
 </script>

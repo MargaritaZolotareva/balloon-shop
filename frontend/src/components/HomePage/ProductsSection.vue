@@ -26,46 +26,34 @@
   </div>
 </template>
 
-<script>
-import ProductItemBig from "./ProductItemBig.vue";
-import ProductSmallContent from "./ProductSmallContent.vue";
-import api from '@/services/api'
+<script setup>
+import { ref, onMounted } from 'vue';
+import ProductItemBig from "../ProductPage/ProductItemBig.vue";
+import ProductSmallContent from "../ProductPage/ProductSmallContent.vue";
+import api from '@/services/api';
+const props = defineProps({
+  categoryId: {
+    type: Number,
+    required: true
+  }
+});
 
-export default {
-  name: "ProductsSection",
-  components: {
-    ProductItemBig,
-    ProductSmallContent
-  },
-  data() {
-    return {
-      products: [],
-      category_title: ""
-    };
-  },
-  props: {
-    categoryId: {
-      type: Number,
-      required: true
-    }
-  },
-  mounted() {
-    this.fetchProducts();
-  },
-  methods: {
-    async fetchProducts() {
-      try {
-        const productsCnt = 5;
-        const response = await api.get(`/categories/${this.categoryId}/products?limit=${productsCnt}`);
-        const data = await response.data;
-        this.products = data.products;
-        this.category_title = data.category_title;
-      } catch (error) {
-        console.error('Ошибка при получении списка товаров:', error);
-      }
-    }
+const products = ref([]);
+const category_title = ref('');
+const fetchProducts = async () => {
+  try {
+    const productsCnt = 5;
+    const response = await api.get(`/categories/${props.categoryId}/products?limit=${productsCnt}`);
+    const data = await response.data;
+    products.value = data.products;
+    category_title.value = data.category_title;
+  } catch (error) {
+    console.error('Ошибка при получении списка товаров:', error);
   }
 };
+onMounted(() => {
+  fetchProducts();
+});
 </script>
 
 <style scoped lang="scss">

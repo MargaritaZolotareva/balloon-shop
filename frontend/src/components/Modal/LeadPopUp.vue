@@ -3,7 +3,7 @@
     <div class="LeadFormWidget__banner"
          :class="{ 'LeadFormWidget__banner--shown': isFormShown }">
       <div class="LeadFormWidget__avatarWrap">
-        <img class="LeadFormWidget__avatar" :src="logo"></div>
+        <img class="LeadFormWidget__avatar" :src="logo" alt="ПОДАРОКК | Воздушные и гелиевые шары"></div>
       <div class="LeadFormWidget__content"
            @click="$emit('open-modal')">
         <div class="LeadFormWidget__header">Появятся вопросы — пишите! Или звоните <a :href="`tel:${contacts.phone}`" @click="trackPhoneClick">{{ contacts.phone }}</a></div>
@@ -25,7 +25,7 @@
     <div class="LeadFormWidget__minimizedBanner"
          :class="{ 'LeadFormWidget__minimizedBanner--shown': !isFormShown }" @click="openWidget">
       <div class="LeadFormWidget__avatarWrap">
-        <img class="LeadFormWidget__avatar" :src="logo" loading="lazy">
+        <img class="LeadFormWidget__avatar" :src="logo" loading="lazy" alt="ПОДАРОКК | Воздушные и гелиевые шары">
         <div class="LeadFormWidget__chatIcon">
           <svg
               viewBox="0 0 512 512"

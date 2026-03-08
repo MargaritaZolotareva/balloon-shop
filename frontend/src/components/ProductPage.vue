@@ -15,6 +15,7 @@
          class="ProductPage__photo"
          :data-src="getImageUrl(product.photos[0].photo_path)"
          :style="{ backgroundImage: `url(${getImageUrl(product.photos[0].photo_path)})` }">
+      <img :src="getImageUrl(product.photos[0].photo_path)" :alt="product.title" class="visually-hidden" />
     </div>
     <div v-else class="Slider ProductPage__photoSlider">
       <div class="Slider__touchableArea ProductPage__photoSliderTouchableArea"
@@ -32,6 +33,7 @@
               <div class="ProductPage__photo"
                    :data-src="getImageUrl(photo.photo_path)"
                    :style="{ backgroundImage: `url(${getImageUrl(photo.photo_path)})` }">
+                <img :src="getImageUrl(photo.photo_path)" :alt="product.title" class="visually-hidden" />
               </div>
             </div>
           </div>
@@ -141,7 +143,9 @@
                   <div class="ProductItem ProductPage__similarProdItem">
                     <div class="ProductItem__photoWrap">
                       <div :style="{ backgroundImage: `url(${getImageUrl(item.photo_path)})` }"
-                           class="ProductItem__photo ProductPage__similarProdItemPhoto"></div>
+                           class="ProductItem__photo ProductPage__similarProdItemPhoto">
+                        <img :src="getImageUrl(item.photo_path)" :alt="item.title" class="visually-hidden" />
+                      </div>
                     </div>
                     <div class="ProductItem__name ProductPage__similarProdItemName">
                       <span>{{ item.title }}</span>

@@ -1,6 +1,8 @@
 <template>
   <div v-if="category_title" class="CategoryPage">
-    <button class="Button Button--rounded Button--defaultSize CategoryPage__closeButton" @click="goBack">
+    <button class="Button Button--rounded Button--defaultSize CategoryPage__closeButton"
+            @click="goBack"
+            aria-label="Вернуться на предыдущую страницу">
       <svg
           class="CloseButtonIcon"
           viewBox="0 0 512 512"

@@ -1,6 +1,8 @@
 <template>
   <div class="CategoriesPage">
-    <button class="Button Button--rounded Button--defaultSize CategoriesPage__closeButton" @click="goBack">
+    <button class="Button Button--rounded Button--defaultSize CategoriesPage__closeButton"
+            @click="goBack"
+            aria-label="Вернуться на предыдущую страницу">
       <svg
           class="CloseButtonIcon"
           viewBox="0 0 512 512"

@@ -11,7 +11,9 @@
         <span class="Top__desc">{{ description }}</span>
       </h2>
       <div class="Top__actionButtonWrap">
-        <button class="Button ActionButton ActionButton--top" @click="openLeadModal">
+        <button class="Button ActionButton ActionButton--top"
+                @click="openLeadModal"
+                aria-label="Оставить заявку">
           {{ buttonText }}
         </button>
       </div>

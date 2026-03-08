@@ -2,7 +2,9 @@
   <div class="Modal Modal" aria-modal="true">
     <div class="Modal__backdrop" @click="close"></div>
     <div class="Modal__content">
-      <button class="Button Button--rounded Button--defaultSize Modal__closeButton" @click="close">
+      <button class="Button Button--rounded Button--defaultSize Modal__closeButton"
+              @click="close"
+              aria-label="Закрыть модальное окно">
         <svg
             class="Modal__closeButton"
             viewBox="0 0 512 512"

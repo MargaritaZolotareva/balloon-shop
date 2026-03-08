@@ -1,6 +1,8 @@
 <template>
   <div v-if="product" class="ProductPage">
-    <button class="Button Button--rounded Button--defaultSize ProductPage__closeButton" @click="goBack">
+    <button class="Button Button--rounded Button--defaultSize ProductPage__closeButton"
+            @click="goBack"
+            aria-label="Вернуться на предыдущую страницу">
       <svg
           class="CloseButtonIcon"
           viewBox="0 0 512 512"
@@ -58,7 +60,8 @@
           class="Slider__navButtonWrap Slider__navButtonWrap--left ProductPage__photoSliderNavButtonWrap ProductPage__photoSliderNavButtonWrap--left">
         <button
             class="Button Button--rounded Button--bigSize SlideButton SlideButton--leftGradient Slider__navButton"
-            @click="moveSlide(-1)">
+            @click="moveSlide(-1)"
+            aria-label="Предыдущая картинка товара">
           <svg
               class="SlideButton__icon SlideButton__icon--leftGradient"
               viewBox="0 0 580 580"
@@ -74,7 +77,8 @@
           class="Slider__navButtonWrap Slider__navButtonWrap--right ProductPage__photoSliderNavButtonWrap ProductPage__photoSliderNavButtonWrap--right">
         <button
             class="Button Button--rounded Button--bigSize SlideButton SlideButton--rightGradient Slider__navButton"
-            @click="moveSlide(1)">
+            @click="moveSlide(1)"
+            aria-label="Следующая картинка товара">
           <svg
               class="SlideButton__icon SlideButton__icon--rightGradient"
               viewBox="0 0 580 580"
@@ -97,7 +101,8 @@
       </div>
       <div class="ProductPage__buttons">
         <div class="Dropdown">
-          <button class="Dropdown__toggle" @click="toggleDropdown">
+          <button class="Dropdown__toggle" @click="toggleDropdown"
+                  aria-label="Открыть список мессенджеров">
             Написать
           </button>
           <div v-if="isDropdownOpen" class="Dropdown__menu" ref="dropdownMenu">
@@ -161,7 +166,8 @@
             <button
                 class="Button Button--rounded Button--bigSize SlideButton SlideButton--left Slider__navButton ProductPage__similarProdSliderNavButton"
                 :class="{ 'SlideButton--disabled': similarActiveSlide === 0 }"
-                @click="moveSimilarSlide(-1)">
+                @click="moveSimilarSlide(-1)"
+                aria-label="Предыдущая композиция">
               <svg
                   class="ProductPage__similarProdSliderNavButtonIcon--left SlideButton__icon SlideButton__icon--left"
                   viewBox="0 0 580 580"
@@ -181,7 +187,8 @@
                   'SlideButton--disabled':
                     similarActiveSlide >= product.similarProducts.length - similarVisibleCount
                 }"
-                @click="moveSimilarSlide(1)">
+                @click="moveSimilarSlide(1)"
+                aria-label="Следующая композиция">
               <svg
                   class="ProductPage__similarProdSliderNavButtonIcon--right SlideButton__icon SlideButton__icon--right"
                   viewBox="0 0 580 580"

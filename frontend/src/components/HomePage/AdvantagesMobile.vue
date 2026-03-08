@@ -35,7 +35,8 @@
       <div class="Slider__navButtonWrap Slider__navButtonWrap--left">
         <button
             class="Button Button--rounded Button--bigSize SlideButton SlideButton--left Slider__navButton Advantages__sliderNavButton"
-            @click="prevSlide">
+            @click="prevSlide"
+            aria-label="Предыдущее преимущество">
           <svg
               class="SlideButton__icon SlideButton__icon--left"
               viewBox="0 0 512 512"
@@ -50,7 +51,8 @@
       <div class="Slider__navButtonWrap Slider__navButtonWrap--right">
         <button
             class="Button Button--rounded Button--bigSize SlideButton SlideButton--right Slider__navButton Advantages__sliderNavButton"
-            @click="nextSlide">
+            @click="nextSlide"
+            aria-label="Следующее преимущество">
           <svg
               class="SlideButton__icon SlideButton__icon--right"
               viewBox="0 0 512 512"

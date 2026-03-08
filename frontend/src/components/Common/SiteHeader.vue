@@ -79,6 +79,7 @@
                     {'ActionButton__headerButton--light': isLightTheme,
                      'ActionButton__headerButton--dark': !isLightTheme}]"
             @click="$emit('open-modal')"
+            aria-label="Оставить заявку"
         >
           Оставить заявку
         </button>

@@ -14,7 +14,8 @@
     </div>
     <div class="items__moreButtonWrap">
       <router-link :to="`/categories/${categoryId}/products`">
-        <button class="SectionButton items__moreButton">
+        <button class="SectionButton items__moreButton"
+                aria-label="Перейти к товарам категории">
           <div class="SectionButton__border">
             <div class="SectionButton__background">
               <div class="SectionButton__text">Перейти к товарам категории</div>

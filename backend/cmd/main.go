@@ -2,39 +2,19 @@ package main
 
 import (
 	"backend/infrastructure"
+	db2 "backend/infrastructure/db"
 	"backend/infrastructure/rabbitmq"
 	"backend/services"
-	"fmt"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"github.com/openzipkin/zipkin-go"
-	"github.com/openzipkin/zipkin-go/reporter"
-	"github.com/openzipkin/zipkin-go/reporter/http"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
+
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/openzipkin/zipkin-go"
+	"github.com/openzipkin/zipkin-go/reporter"
+	"github.com/openzipkin/zipkin-go/reporter/http"
 )
-
-func InitDB() *gorm.DB {
-	dsn := fmt.Sprintf(
-		"user=%s password=%s dbname=%s host=%s port=%s sslmode=disable",
-		os.Getenv("POSTGRES_USER"),
-		os.Getenv("POSTGRES_PASSWORD"),
-		os.Getenv("POSTGRES_DB"),
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_PORT"),
-	)
-
-	var err error
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if err != nil {
-		log.Fatalf("Ошибка при соединении с БД: %v", err)
-	}
-
-	return db
-}
 
 //func InitSentry() {
 //	dsn := fmt.Sprintf("https://%s@%s/%s",
@@ -82,7 +62,7 @@ func AuthBot() *tgbotapi.BotAPI {
 
 func main() {
 	log.SetOutput(os.Stdout)
-	db := InitDB()
+	db := db2.InitDB()
 	rmq := rabbitmq.InitRabbitMq()
 	defer rmq.Close()
 	sqlDB, err := db.DB()

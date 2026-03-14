@@ -28,12 +28,12 @@
         <img class="LeadFormWidget__avatar" :src="logo" loading="lazy" alt="ПОДАРОКК | Воздушные и гелиевые шары">
         <div class="LeadFormWidget__chatIcon">
           <svg
-              viewBox="0 0 512 512"
+              viewBox="0 0 610 610"
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
               fill="currentColor">
-            <path fill="currentColor" d="M267.7 576.9C267.7 576.9 267.7 576.9 267.7 576.9L229.9 603.6C222.6 608.8 213 609.4 205 605.3C197 601.2 192 593 192 584L192 512L160 512C107 512 64 469 64 416L64 192C64 139 107 96 160 96L480 96C533 96 576 139 576 192L576 416C576 469 533 512 480 512L359.6 512L267.7 576.9zM332 472.8C340.1 467.1 349.8 464 359.7 464L480 464C506.5 464 528 442.5 528 416L528 192C528 165.5 506.5 144 480 144L160 144C133.5 144 112 165.5 112 192L112 416C112 442.5 133.5 464 160 464L216 464C226.4 464 235.3 470.6 238.6 479.9C239.5 482.4 240 485.1 240 488L240 537.7C272.7 514.6 303.3 493 331.9 472.8z"></path>
+            <path fill="currentColor" d="M64 416L64 192C64 139 107 96 160 96L480 96C533 96 576 139 576 192L576 416C576 469 533 512 480 512L360 512C354.8 512 349.8 513.7 345.6 516.8L230.4 603.2C226.2 606.3 221.2 608 216 608C202.7 608 192 597.3 192 584L192 512L160 512C107 512 64 469 64 416z"></path>
           </svg>
         </div>
       </div>
@@ -44,7 +44,7 @@
 <script setup>
 import { ref } from 'vue';
 import logo from '@/assets/images/logo.jpg';
-import { contacts } from '@/assets/js/contacts';
+import { contacts } from '@/assets/js/const';
 
 const isFormShown = ref(true);
 

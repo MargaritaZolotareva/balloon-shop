@@ -10,6 +10,7 @@ type Product struct {
 	Photos       []Photo `gorm:"foreignkey:ProductID"`
 	CategoryId   int     `json:"category"`
 	ProductOrder int     `json:"order"`
+	Slug         string  `json:"slug"`
 }
 
 type Photo struct {
@@ -31,4 +32,5 @@ type Category struct {
 	ID      int    `json:"id"`
 	Title   string `json:"title"`
 	PhotoID int    `json:"photo_id"`
+	Slug    string `json:"slug"`
 }

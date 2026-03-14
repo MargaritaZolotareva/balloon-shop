@@ -1,19 +1,19 @@
 <template>
   <div class="main-block" id="top">
     <h2 class="block__title block__title--default">
-      <div class="block__titleWrap">{{ category_title }}</div>
+      <div class="block__titleWrap">{{ categoryData.title }}</div>
     </h2>
     <div class="block-content">
-      <div class="items-wrap" v-if="products.length > 0">
-        <ProductItemBig :product="products[0]"/>
-        <ProductSmallContent :products="products.slice(1)"/>
+      <div class="items-wrap" v-if="categoryData.products.length > 0">
+        <ProductItemBig :product="categoryData.products[0]"/>
+        <ProductSmallContent :products="categoryData.products.slice(1)"/>
       </div>
       <div class="loading" v-else>
         <h2>Загрузка...</h2>
       </div>
     </div>
     <div class="items__moreButtonWrap">
-      <router-link :to="`/categories/${categoryId}/products`">
+      <router-link :to="`/categories/${categoryData.slug}/products`">
         <button class="SectionButton items__moreButton"
                 aria-label="Перейти к товарам категории">
           <div class="SectionButton__border">
@@ -28,32 +28,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
 import ProductItemBig from "../ProductPage/ProductItemBig.vue";
 import ProductSmallContent from "../ProductPage/ProductSmallContent.vue";
-import api from '@/services/api';
-const props = defineProps({
-  categoryId: {
-    type: Number,
-    required: true
-  }
-});
 
-const products = ref([]);
-const category_title = ref('');
-const fetchProducts = async () => {
-  try {
-    const productsCnt = 5;
-    const response = await api.get(`/categories/${props.categoryId}/products?limit=${productsCnt}`);
-    const data = await response.data;
-    products.value = data.products;
-    category_title.value = data.category_title;
-  } catch (error) {
-    console.error('Ошибка при получении списка товаров:', error);
-  }
-};
-onMounted(() => {
-  fetchProducts();
+defineProps({
+  categoryData: { type: Object, required: true }
 });
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="category-item">
-    <router-link :to="`/categories/${category.id}/products`" div class="img-wrap">
+    <router-link :to="`/categories/${category.slug}/products`" div class="img-wrap">
       <div :data-src="getImageUrl(category.photo)" class="category-item__img"
            :style="{ backgroundImage: `url(${getImageUrl(category.photo)})` }">
         <img :src="getImageUrl(category.photo)" :alt="category.title" class="visually-hidden" />

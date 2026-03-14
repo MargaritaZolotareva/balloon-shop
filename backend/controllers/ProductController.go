@@ -3,7 +3,6 @@ package controllers
 import (
 	"backend/api"
 	metrics "backend/infrastructure/metrics"
-	"backend/models"
 	"backend/repositories"
 	"backend/services"
 	"errors"
@@ -11,7 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"net/http"
-	"strconv"
 )
 
 type ProductController struct {
@@ -24,17 +22,10 @@ func NewProductController(db *gorm.DB, productRepo repositories.ProductRepositor
 	return &ProductController{db, productRepo, productService}
 }
 
-func (pc *ProductController) GetProduct(c *gin.Context) {
-	productID, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		sentry.CaptureException(err)
-		metrics.Error400Counter.WithLabelValues("400").Inc()
-		api.SendError(c, http.StatusBadRequest, "Неверный формат ID товара")
-		return
-	}
+func (pc *ProductController) GetProductBySlug(c *gin.Context) {
+	productSlug := c.Param("slug")
 
-	var product models.Product
-	product, err = pc.productRepository.GetProduct(productID)
+	product, err := pc.productRepository.GetProductBySlug(productSlug)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			sentry.CaptureException(err)
@@ -51,7 +42,7 @@ func (pc *ProductController) GetProduct(c *gin.Context) {
 	photosResponse = pc.productService.ConvertPhotosToResponse(product)
 
 	var similarProducts []api.SimilarProductResponse
-	similarProducts, err = pc.productRepository.GetSimilarProducts(product.CategoryId, productID)
+	similarProducts, err = pc.productRepository.GetSimilarProducts(product.CategoryId, product.ID)
 	if err != nil {
 		sentry.CaptureException(err)
 		metrics.Error500Counter.WithLabelValues("500").Inc()
@@ -65,6 +56,7 @@ func (pc *ProductController) GetProduct(c *gin.Context) {
 		Description:     product.Description,
 		Price:           product.Price,
 		Category:        product.CategoryId,
+		Slug:            product.Slug,
 		Photos:          photosResponse,
 		SimilarProducts: similarProducts,
 	}
@@ -74,21 +66,14 @@ func (pc *ProductController) GetProduct(c *gin.Context) {
 }
 
 func (pc *ProductController) GetProductsByCategory(c *gin.Context) {
-	categoryID, err := strconv.ParseInt(c.Param("id"), 10, 64)
-	if err != nil {
-		sentry.CaptureException(err)
-		metrics.Error400Counter.WithLabelValues("400").Inc()
-		api.SendError(c, http.StatusBadRequest, "Неверный формат ID категории")
-		return
-	}
+	categorySlug := c.Param("slug")
 
-	var limit int
 	var productsByCat api.GetProductsByCategoryResponse
-	limit, err = pc.productService.GetLimitParam(c)
+	limit, err := pc.productService.GetLimitParam(c)
 	if err != nil || limit < 1 {
-		productsByCat, err = pc.productRepository.GetProductsByCategory(int(categoryID), 0)
+		productsByCat, err = pc.productRepository.GetProductsByCategory(categorySlug, 0)
 	} else {
-		productsByCat, err = pc.productRepository.GetProductsByCategory(int(categoryID), limit)
+		productsByCat, err = pc.productRepository.GetProductsByCategory(categorySlug, limit)
 	}
 
 	if err != nil {

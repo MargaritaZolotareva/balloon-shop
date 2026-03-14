@@ -141,8 +141,8 @@
                     transform: `translateX(${similarTranslateX}px)`,
                     transition: 'transform 0.25s cubic-bezier(0.1, 0, 0.25, 1)'
                   }">
-              <router-link v-for="item in product.similarProducts" :key="item.id"
-                           :to="`/products/${item.id}`"
+              <router-link v-for="item in product.similarProducts" :key="item.slug"
+                           :to="`/products/${item.slug}`"
                            class="Slider__item ProductPage__similarProdSliderItem">
                 <div class="Slider__itemContent">
                   <div class="ProductItem ProductPage__similarProdItem">
@@ -213,7 +213,7 @@
 import { ref, onMounted, watch, computed, nextTick } from 'vue';
 import api from '@/services/api';
 import { useRoute, useRouter } from 'vue-router';
-import { contacts } from '@/assets/js/contacts';
+import { contacts } from '@/assets/js/const';
 
 const product = ref(null);
 const activeSlide = ref(0);
@@ -234,9 +234,9 @@ const similarSlidesContainer = ref(null);
 const route = useRoute();
 const router = useRouter();
 
-const fetchProduct = async (id) => {
+const fetchProduct = async (slug) => {
   try {
-    const response = await api.get(`/products/${id}`);
+    const response = await api.get(`/products/${slug}`);
     product.value = await response.data;
   } catch (error) {
     console.error('Ошибка при получении данных о товаре:', error);
@@ -244,7 +244,7 @@ const fetchProduct = async (id) => {
 };
 
 onMounted(() => {
-  const productId = route.params.id;
+  const productId = route.params.slug;
   fetchProduct(productId).then(() => {
     nextTick(() => {
       calculateSlideWidth();
@@ -258,7 +258,7 @@ onMounted(() => {
 });
 
 watch(route, (to) => {
-  fetchProduct(to.params.id);
+  fetchProduct(to.params.slug);
 });
 
 const calculateSlideWidth = () => {

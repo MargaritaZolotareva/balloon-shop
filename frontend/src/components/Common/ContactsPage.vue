@@ -71,7 +71,7 @@
 </template>
 
 <script setup>
-import { contacts } from '@/assets/js/contacts';
+import { contacts } from '@/assets/js/const';
 import { useRouter } from 'vue-router'
 const router = useRouter()
 const goBack = () => {

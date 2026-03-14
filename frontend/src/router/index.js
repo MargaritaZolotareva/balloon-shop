@@ -17,13 +17,13 @@ const routes = [
         meta: { isHomePage: true }
     },
     {
-        "path": "/products/:id",
+        "path": "/products/:slug",
         "name": "Product",
         "component": ProductPage,
         meta: { isHomePage: false },
     },
     {
-        "path": "/categories/:id/products",
+        "path": "/categories/:slug/products",
         "name": "Category",
         "component": CategoryPage,
         meta: { isHomePage: false },

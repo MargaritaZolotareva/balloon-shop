@@ -1,6 +1,6 @@
 <template>
   <div class="product-item product-item--big">
-    <router-link :to="`/products/${product.id}`" class="img-wrap">
+    <router-link :to="`/products/${product.slug}`" class="img-wrap">
       <div :data-src="getImageUrl(product.photo)" class="product-item__img"
            :style="{ backgroundImage: `url(${getImageUrl(product.photo)})` }">
         <img :src="getImageUrl(product.photo)" :alt="product.title" class="visually-hidden" />

@@ -1,3 +1,11 @@
+export const ROUTES = {
+    PROMO_URL: '/categories/promo/products',
+    CONTACTS: '/contacts',
+    DELIVERY: '/delivery',
+    CATEGORIES: '/categories',
+    PRIVACY: '/privacy'
+}
+
 export const contacts = {
     phone: '+7 (950) 445-48-84',
     email: 'podarokk.perm@gmail.com',

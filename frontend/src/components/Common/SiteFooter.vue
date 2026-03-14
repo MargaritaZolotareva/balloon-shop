@@ -5,19 +5,19 @@
       <div class="footer__nav">
         <ul>
           <li>
-            <a href="/categories">Каталог</a>
+            <a :href="ROUTES.CATEGORIES">Каталог</a>
           </li>
           <li>
-            <a href="/delivery">Доставка и оплата</a>
+            <a :href="ROUTES.DELIVERY">Доставка и оплата</a>
           </li>
           <li>
-            <a href="/categories/0/products">Акции</a>
+            <a :href="ROUTES.PROMO_URL">Акции</a>
           </li>
           <li>
-            <a href="/contacts">Контакты</a>
+            <a :href="ROUTES.CONTACTS">Контакты</a>
           </li>
           <li>
-            <a href="/privacy">Политика конфиденциальности</a>
+            <a :href="ROUTES.PRIVACY">Политика конфиденциальности</a>
           </li>
         </ul>
       </div>
@@ -29,7 +29,7 @@
         </div>
         <div class="footer__location">
           <span class="footer__icon">📍</span>
-          <span>Пермь, Тургенева, 21, 2 этаж, отдел 215</span>
+          <span>{{ contacts.address }}</span>
         </div>
 
         <div class="footer__schedule">
@@ -55,6 +55,7 @@
 
 <script setup>
 const year = new Date().getFullYear()
+import {contacts, ROUTES} from '@/assets/js/const';
 </script>
 
 <style scoped lang="scss">

@@ -3,14 +3,12 @@ package controllers
 import (
 	"backend/api"
 	"backend/infrastructure/metrics"
-	"backend/models"
 	"backend/repositories"
 	"errors"
 	"github.com/getsentry/sentry-go"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"net/http"
-	"strconv"
 )
 
 type CategoryController struct {
@@ -22,22 +20,15 @@ func NewCategoryController(db *gorm.DB, categoryRepo repositories.CategoryReposi
 	return &CategoryController{db, categoryRepo}
 }
 
-func (cc *CategoryController) GetCategory(c *gin.Context) {
-	categoryID, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		sentry.CaptureException(err)
-		metrics.Error400Counter.WithLabelValues("400").Inc()
-		api.SendError(c, http.StatusBadRequest, "Неверный формат ID категории")
-		return
-	}
+func (cc *CategoryController) GetCategoryBySlug(c *gin.Context) {
+	categorySlug := c.Param("slug")
 
-	var category models.Category
-	category, err = cc.categoryRepository.GetCategory(categoryID)
+	category, err := cc.categoryRepository.GetCategoryBySlug(categorySlug)
 	if err != nil {
 		sentry.CaptureException(err)
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			metrics.Error404Counter.WithLabelValues("404").Inc()
-			api.SendError(c, http.StatusNotFound, "Товар не найден")
+			api.SendError(c, http.StatusNotFound, "Категория не найдена")
 			return
 		}
 		metrics.Error500Counter.WithLabelValues("500").Inc()

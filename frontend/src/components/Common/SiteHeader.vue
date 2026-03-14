@@ -23,7 +23,7 @@
         >
           <svg
               class="HeaderContact__icon--phone"
-              viewBox="0 0 512 512"
+              viewBox="0 0 580 580"
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
@@ -40,17 +40,17 @@
       <ul class="Nav__elemsWrap">
         <li class="Nav__elem">
           <a :class="['Nav__link', 'Nav__link--active', { 'Nav__link--light': isLightTheme,
-                                                            'Nav__link--dark': !isLightTheme }]" href="/categories">Каталог</a>
+                                                            'Nav__link--dark': !isLightTheme }]" :href="ROUTES.CATEGORIES">Каталог</a>
         </li>
         <li class="Nav__elem"><a :class="['Nav__link', { 'Nav__link--light': isLightTheme,
-                                                             'Nav__link--dark': !isLightTheme }]" href="/delivery">Доставка и оплата</a>
+                                                             'Nav__link--dark': !isLightTheme }]" :href="ROUTES.DELIVERY">Доставка и оплата</a>
         </li>
         <li class="Nav__elem"><a :class="['Nav__link', { 'Nav__link--light': isLightTheme,
                                                              'Nav__link--dark': !isLightTheme }]"
-                                 href="/categories/0/products">Акции</a></li>
+                                 :href="ROUTES.PROMO_URL">Акции</a></li>
         <li class="Nav__elem"><a :class="['Nav__link', { 'Nav__link--light': isLightTheme,
                                                              'Nav__link--dark': !isLightTheme }]"
-                                 href="/contacts">Контакты</a></li>
+                                 :href="ROUTES.CONTACTS">Контакты</a></li>
       </ul>
     </nav>
 
@@ -64,7 +64,7 @@
       >
         <svg
             class="HeaderContact__icon--phone"
-            viewBox="0 0 512 512"
+            viewBox="0 0 580 580"
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
@@ -93,7 +93,7 @@ import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 import logo from '@/assets/images/logo.jpg';
-import { contacts } from '@/assets/js/contacts';
+import {contacts, ROUTES} from '@/assets/js/const';
 
 const router = useRouter()
 const route = useRoute()

@@ -24,11 +24,11 @@ services:
     env_file:
       - ../.env
     volumes:
-      - ../backend/infrastructure/db/migrations/20251220142215_create_tables.up.sql:/docker-entrypoint-initdb.d/init.sql
+      - balloon_shop_db_data:/var/lib/postgresql/data
     networks:
       - app-network
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "user"]
+      test: ["CMD-SHELL", "pg_isready -d $POSTGRES_DB -U $POSTGRES_USER"]
       interval: 30s
       retries: 5
       start_period: 1m
@@ -101,5 +101,5 @@ networks:
     driver: bridge
 
 volumes:
-  postgres_data:
+  balloon_shop_db_data:
   rabbitmq_data:

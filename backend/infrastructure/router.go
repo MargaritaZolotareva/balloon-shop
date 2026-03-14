@@ -27,6 +27,8 @@ func SetupRouter(db *gorm.DB, rmq *rabbitmq.RabbitMQ, tracer *zipkin.Tracer) *gi
 	categoryRepo := repositories.NewCategoryRepository(db)
 	categoryController := controllers.NewCategoryController(db, categoryRepo)
 
+	homepageController := controllers.NewHomepageController(db, categoryRepo)
+
 	messageController := controllers.NewMessageController(rmq)
 
 	r := gin.Default()
@@ -42,11 +44,12 @@ func SetupRouter(db *gorm.DB, rmq *rabbitmq.RabbitMQ, tracer *zipkin.Tracer) *gi
 	apiPref := r.Group("/api")
 	apiPref.GET("/metrics", gin.WrapH(promhttp.Handler()))
 	apiPref.POST("/lead-form", messageController.SendLeadMessage)
-	apiPref.GET("/products/:id", productController.GetProduct)
+	apiPref.GET("/products/:slug", productController.GetProductBySlug)
 	apiPref.GET("/categories", categoryController.GetCategoriesList)
-	apiPref.GET("/categories/:id", categoryController.GetCategory)
-	apiPref.GET("/categories/:id/products", productController.GetProductsByCategory)
+	apiPref.GET("/categories/:slug", categoryController.GetCategoryBySlug)
+	apiPref.GET("/categories/:slug/products", productController.GetProductsByCategory)
 	apiPref.GET("/photos/:filename", photosHandler())
+	apiPref.GET("/homepage", homepageController.GetHomepageCategories)
 
 	return r
 }

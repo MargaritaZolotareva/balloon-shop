@@ -42,9 +42,9 @@ const products = ref([]);
 const route = useRoute();
 const router = useRouter();
 
-const fetchCategoryProducts = async (categoryId) => {
+const fetchCategoryProducts = async (categorySlug) => {
   try {
-    const response = await api.get(`/categories/${categoryId}/products`);
+    const response = await api.get(`/categories/${categorySlug}/products`);
     const data = await response.data;
     products.value = data.products;
     category_title.value = data.category_title;
@@ -56,8 +56,8 @@ const goBack = () => {
   router.back();
 };
 onMounted(() => {
-  const categoryId = route.params.id;
-  fetchCategoryProducts(categoryId);
+  const categorySlug = route.params.slug;
+  fetchCategoryProducts(categorySlug);
 });
 </script>
 

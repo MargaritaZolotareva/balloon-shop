@@ -9,7 +9,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-// пример запуска: POSTGRES_USER=user POSTGRES_PASSWORD=pswd DB_HOST=host DB_PORT=5432 POSTGRES_DB=db go run scripts/fill_slugs.go
+// пример запуска: POSTGRES_USER=user POSTGRES_PASSWORD=pswd DB_HOST=host DB_PORT=5432 POSTGRES_DB=db go run scripts/slugs/fill_slugs.go
 
 func main() {
 	db := db2.InitDB()

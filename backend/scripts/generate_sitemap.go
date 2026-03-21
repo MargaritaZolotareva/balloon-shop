@@ -5,7 +5,12 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 )
+
+const PublicDir = "./../frontend/public/"
+const DistDir = "./dist"
+const SitemapName = "sitemap.xml"
 
 func main() {
 	db := db2.InitDB()
@@ -63,8 +68,13 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	err = os.WriteFile("./../frontend/public/sitemap.xml", []byte(sitemap), 0644)
+	var targetFile string
+	if info, err := os.Stat(PublicDir); err == nil && info.IsDir() {
+		targetFile = filepath.Join(PublicDir, SitemapName)
+	} else {
+		targetFile = filepath.Join(DistDir, SitemapName)
+	}
+	err = os.WriteFile(targetFile, []byte(sitemap), 0644)
 	if err != nil {
 		log.Fatal(err)
 	}

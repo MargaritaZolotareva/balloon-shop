@@ -3,10 +3,10 @@ name: Go Tests and Build
 on:
   push:
     branches:
-      - master
+      - go-only-server
   pull_request:
     branches:
-      - master
+      - go-only-server
 
 jobs:
   build:
@@ -37,8 +37,9 @@ jobs:
 
       - name: Run tests
         run: |
+          set -e
           cd backend
-          go test -v ./...
+          go test -v $(go list ./... | grep -v "/scripts")
         continue-on-error: false
 
       - name: Upload code coverage

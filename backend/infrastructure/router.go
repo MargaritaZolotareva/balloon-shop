@@ -4,22 +4,30 @@ import (
 	"backend/api"
 	"backend/controllers"
 	"backend/infrastructure/metrics"
-	"backend/infrastructure/rabbitmq"
+	"backend/infrastructure/middleware"
 	"backend/repositories"
 	"backend/services"
 	"fmt"
-	"github.com/getsentry/sentry-go"
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
-	"github.com/openzipkin/zipkin-go"
-	promhttp "github.com/prometheus/client_golang/prometheus/promhttp"
-	"gorm.io/gorm"
-	"log"
 	"net/http"
 	"os"
+	"path/filepath"
+	"time"
+
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	promhttp "github.com/prometheus/client_golang/prometheus/promhttp"
+	"gorm.io/gorm"
 )
 
-func SetupRouter(db *gorm.DB, rmq *rabbitmq.RabbitMQ, tracer *zipkin.Tracer) *gin.Engine {
+var (
+	FrontendDistDir    = os.Getenv("FRONTEND_DIST_DIR")
+	FrontendJSDir      = filepath.Join(FrontendDistDir, "js")
+	FrontendCSSDir     = filepath.Join(FrontendDistDir, "css")
+	PhotoCacheDuration = 7 * 24 * time.Hour
+)
+
+func SetupRouter(db *gorm.DB, botAPI *tgbotapi.BotAPI) *gin.Engine {
 	productRepo := repositories.NewProductRepository(db)
 	productService := services.NewProductService()
 	productController := controllers.NewProductController(db, productRepo, productService)
@@ -29,7 +37,8 @@ func SetupRouter(db *gorm.DB, rmq *rabbitmq.RabbitMQ, tracer *zipkin.Tracer) *gi
 
 	homepageController := controllers.NewHomepageController(db, categoryRepo)
 
-	messageController := controllers.NewMessageController(rmq)
+	messageService := services.NewMessageService(botAPI)
+	messageController := controllers.NewMessageController(messageService)
 
 	r := gin.Default()
 
@@ -38,8 +47,9 @@ func SetupRouter(db *gorm.DB, rmq *rabbitmq.RabbitMQ, tracer *zipkin.Tracer) *gi
 		AllowMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders: []string{"Origin", "Content-Type"},
 	}))
-
-	r.Use(zipkinMiddleware(tracer))
+	r.Use(middleware.RedirectWWW())
+	r.Use(middleware.GzipMiddleware())
+	r.Use(middleware.SecurityHeadersMiddleware())
 
 	apiPref := r.Group("/api")
 	apiPref.GET("/metrics", gin.WrapH(promhttp.Handler()))
@@ -48,26 +58,29 @@ func SetupRouter(db *gorm.DB, rmq *rabbitmq.RabbitMQ, tracer *zipkin.Tracer) *gi
 	apiPref.GET("/categories", categoryController.GetCategoriesList)
 	apiPref.GET("/categories/:slug", categoryController.GetCategoryBySlug)
 	apiPref.GET("/categories/:slug/products", productController.GetProductsByCategory)
-	apiPref.GET("/photos/:filename", photosHandler())
+	photosCache := &middleware.SafeCache{
+		Data: make(map[string]*middleware.SimpleCacheItem),
+	}
+
+	apiPref.GET("/photos/:filename", middleware.SimpleCacheMiddleware(PhotoCacheDuration, photosCache), photosHandler())
 	apiPref.GET("/homepage", homepageController.GetHomepageCategories)
 
+	r.Static("/js", FrontendJSDir)
+	r.Static("/css", FrontendCSSDir)
+
+	r.StaticFile("/sitemap.xml", filepath.Join(FrontendDistDir, "sitemap.xml"))
+	r.StaticFile("/robots.txt", filepath.Join(FrontendDistDir, "robots.txt"))
+	r.StaticFile("/favicon.ico", filepath.Join(FrontendDistDir, "favicon.ico"))
+	r.NoRoute(func(c *gin.Context) {
+		path := FrontendDistDir + c.Request.URL.Path
+		if filepath.Ext(path) != "" {
+			c.Status(http.StatusNotFound)
+			return
+		}
+		c.File(filepath.Join(FrontendDistDir, "index.html"))
+	})
+
 	return r
-}
-
-func zipkinMiddleware(tracer *zipkin.Tracer) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		log.Printf("Starting Zipkin span for %s %s", c.Request.Method, c.Request.URL.Path)
-
-		span := tracer.StartSpan(c.Request.URL.Path)
-		c.Set("zipkin-span", span)
-		c.Request = c.Request.WithContext(zipkin.NewContext(c, span))
-		log.Printf("Created Zipkin span for %s", c.Request.URL.Path)
-
-		c.Next()
-
-		span.Finish()
-		log.Printf("Finished Zipkin span for %s %s", c.Request.Method, c.Request.URL.Path)
-	}
 }
 
 func photosHandler() gin.HandlerFunc {
@@ -76,12 +89,12 @@ func photosHandler() gin.HandlerFunc {
 		filePath := fmt.Sprintf("./photos/%s", filename)
 
 		if _, err := os.Stat(filePath); os.IsNotExist(err) {
-			sentry.CaptureException(err)
 			metrics.Error404Counter.WithLabelValues("404").Inc()
 			api.SendError(c, http.StatusNotFound, "Файл не найден")
 			return
 		}
 
+		c.Header("Cache-Control", "public, max-age=2592000, immutable")
 		c.File(filePath)
 	}
 }

@@ -1,4 +1,4 @@
-name: Deploy to Yandex Cloud
+name: Deploy to VPS
 
 on:
   workflow_run:
@@ -21,16 +21,25 @@ jobs:
 
       - name: SSH into the server and deploy with Docker Compose
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.YC_USER }}@${{ secrets.YC_SERVER_IP }} << 'EOF'
-            cd balloon-shop
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_SERVER_IP }} << 'EOF'
+            cd /home/balloon-shop
             git fetch origin
             git checkout master
             git reset --hard origin/master
           
             cd deploy
             sudo docker-compose down
+            chmod +x ./db-healthcheck.sh
             sudo docker-compose up -d --build
             echo "Docker Compose deployment completed."
+          
+            # Wait for DB to be ready
+            echo "Waiting for Postgres to be ready..."
+            until sudo docker exec db pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"; do
+              echo "Postgres is unavailable - sleeping"
+              sleep 2
+            done
+            echo "Postgres is ready!"
           
             # Run DB migrations
             echo "Running database migrations..."
@@ -42,4 +51,8 @@ jobs:
             # Fill slugs
             echo "Filling slugs..."
             sudo docker exec -t backend sh -c 'cd /build && ./fill_slugs'
+          
+            # Generate sitemap
+            echo "Generating sitemap..."
+            sudo docker exec -t backend sh -c 'cd /build && ./generate_sitemap'
           EOF

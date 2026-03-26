@@ -3,29 +3,27 @@ package controllers
 import (
 	"backend/api"
 	"backend/infrastructure/metrics"
-	"backend/infrastructure/rabbitmq"
 	"backend/models"
+	"backend/services"
 	"fmt"
-	"github.com/getsentry/sentry-go"
-	"github.com/gin-gonic/gin"
 	"net/http"
-	"os"
 	"regexp"
+
+	"github.com/gin-gonic/gin"
 )
 
 type MessageController struct {
-	rmq rabbitmq.MqInterface
+	ns services.MessageService
 }
 
-func NewMessageController(rmq rabbitmq.MqInterface) *MessageController {
-	return &MessageController{rmq}
+func NewMessageController(ns services.MessageService) *MessageController {
+	return &MessageController{ns}
 }
 
 func (mc *MessageController) SendLeadMessage(c *gin.Context) {
 	var formData models.LeadForm
 
 	if err := c.ShouldBindJSON(&formData); err != nil {
-		sentry.CaptureException(err)
 		metrics.Error400Counter.WithLabelValues("400").Inc()
 		api.SendError(c, http.StatusBadRequest, "Неверные данные")
 		return
@@ -34,17 +32,13 @@ func (mc *MessageController) SendLeadMessage(c *gin.Context) {
 	phoneRegex := `^\+?[0-9]{10,15}$`
 	match, _ := regexp.MatchString(phoneRegex, formData.Phone)
 	if !match {
-		sentry.CaptureMessage("Неверный формат номера телефона")
 		metrics.Error400Counter.WithLabelValues("400").Inc()
 		api.SendError(c, http.StatusBadRequest, "Неверный формат номера телефона")
 		return
 	}
 
-	message := fmt.Sprintf("Новая заявка: %s, телефон: %s, комментарий: %s", formData.Name, formData.Phone, formData.Message)
-
-	err := mc.rmq.PublishMessage(os.Getenv("RABBITMQ_LEAD_QUEUE_NAME"), message)
+	err := mc.ns.SendMessage(formData)
 	if err != nil {
-		sentry.CaptureException(err)
 		metrics.Error500Counter.WithLabelValues("500").Inc()
 		api.SendError(c, http.StatusInternalServerError, fmt.Sprintf("Ошибка отправки данных в очередь: %s", err))
 		return

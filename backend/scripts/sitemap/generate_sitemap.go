@@ -5,7 +5,11 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 )
+
+const PublicDir = "./../frontend/public/"
+const SitemapName = "sitemap.xml"
 
 func main() {
 	db := db2.InitDB()
@@ -16,6 +20,7 @@ func main() {
 	}
 	defer sqlDB.Close()
 
+	targetDir := os.Getenv("FRONTEND_DIST_DIR")
 	var sitemap string
 	err = sqlDB.QueryRow(`
         SELECT xmlroot(
@@ -64,7 +69,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	err = os.WriteFile("./../frontend/public/sitemap.xml", []byte(sitemap), 0644)
+	var targetFile string
+	if info, err := os.Stat(PublicDir); err == nil && info.IsDir() {
+		targetFile = filepath.Join(PublicDir, SitemapName)
+	} else {
+		targetFile = filepath.Join(targetDir, SitemapName)
+	}
+	err = os.WriteFile(targetFile, []byte(sitemap), 0644)
 	if err != nil {
 		log.Fatal(err)
 	}

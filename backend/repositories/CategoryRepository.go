@@ -3,6 +3,7 @@ package repositories
 import (
 	"backend/api"
 	"backend/models"
+
 	"gorm.io/gorm"
 )
 
@@ -34,7 +35,7 @@ func (ps *CategoryRepositoryImpl) GetAllCategories() ([]api.CategoriesResponse, 
 
 	if err := ps.DB.Table("categories").
 		Joins("LEFT JOIN photos ON photos.id = categories.photo_id").
-		Select("categories.id, categories.title, photos.photo_path AS photo").
+		Select("categories.id, categories.title, categories.slug, photos.photo_path AS photo").
 		Find(&categories).Error; err != nil {
 		return []api.CategoriesResponse{}, err
 	}

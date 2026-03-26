@@ -1,4 +1,4 @@
-name: Deploy to Yandex Cloud
+name: Deploy to VPS
 
 on:
   workflow_run:
@@ -21,8 +21,8 @@ jobs:
 
       - name: SSH into the server and deploy with Docker Compose
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.YC_USER }}@${{ secrets.YC_SERVER_IP }} << 'EOF'
-            cd balloon-shop
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_SERVER_IP }} << 'EOF'
+            cd /home/balloon-shop
             git fetch origin
             git checkout go-only-server
             git reset --hard origin/go-only-server

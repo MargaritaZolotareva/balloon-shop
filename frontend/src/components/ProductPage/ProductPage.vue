@@ -676,10 +676,6 @@ const trackSocialClick = (socialNetwork) => {
       &--left {
         left: 38px;
       }
-
-      &--right {
-        right: 77px;
-      }
     }
 
     &__similarProdSliderNavButton {
